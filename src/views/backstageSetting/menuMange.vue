@@ -5,12 +5,21 @@
 </template>
 
 <script>
+import {menuList} from '@/api/backstageSetting'
 export default {
     name:'menuMange',
     data() {
         return {
 
         }
+    },
+    mounted(){
+      menuList().then(res=>{
+          console.log(res)
+          // this.loading = false
+        }).catch(()=>{
+          // this.loading=false
+        })
     }
 }
 </script>
@@ -18,4 +27,3 @@ export default {
 <style>
 
 </style>
-operation log

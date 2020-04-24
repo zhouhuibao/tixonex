@@ -16,8 +16,14 @@
             
             :rules="setRules(item)"
         >
-
         
+            <Editor 
+                v-if="item.type === 'tinymce'"
+                :value="item.value"
+                v-model="item.value"
+            >
+
+            </Editor>
             <el-input autocomplete="new-password" v-if="item.type === 'text'" :show-password="item.password || false" :disabled="item.disabled || false" v-model="item.value" :placeholder="`请输入${item.title}`" ></el-input>
             <el-input type="textarea"  :autosize="{ minRows: 4, maxRows: 10}" v-if="item.type === 'textarea'" :disabled="item.disabled || false" v-model="item.value" :placeholder="`请输入${item.title}`" ></el-input>
             <el-input-number v-if="item.type === 'number'" v-model="item.value" :min="0" :placeholder="`请输入${item.title}`" ></el-input-number>
@@ -124,7 +130,7 @@
 <script>
 
 import {isEmpty, dataType} from '@/utils/auth'
-
+import Editor from '@/components/Tinymce'
 export default {
     data() {
       return {
@@ -142,7 +148,6 @@ export default {
         width:{
             type:String
         },
-        
         
     },
     watch: {
@@ -162,6 +167,9 @@ export default {
             obj.value = isEmpty(obj.value) ? obj.value : ''
             this.dynamicValidateForm.domains.push(obj)
         })
+    },
+    components: {
+        Editor
     },
     methods: {
         filterArr(obj){

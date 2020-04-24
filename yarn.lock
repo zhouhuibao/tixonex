@@ -816,6 +816,11 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
+"@tinymce/tinymce-vue@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-vue/-/tinymce-vue-3.2.0.tgz#abadab7fd6e143688e756df779fc3b81e586427a"
+  integrity sha512-7mrexFcL23TdsHL35EHrhUN1HhRW5DbHeraai+idOqARhUhbATDxp4RBBUBGfuCjsEPnkNdu9+CcJl9xETSH/g==
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -9919,6 +9924,11 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
+tinymce@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.2.2.tgz#1ac77cce1565b54932b4e612d2fd9c07b687f238"
+  integrity sha512-G1KZOxHIrokeP/rhJuvwctmeAuHDAeH8AI1ubnVcdMZtmC6mUh3SfESqFJrFWoiF143OUMC61GkVhi920pIP0A==
+
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
@@ -10383,6 +10393,11 @@ vue-router@3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.6.tgz#2e4f0f9cbb0b96d0205ab2690cfe588935136ac3"
   integrity sha512-Ox0ciFLswtSGRTHYhGvx2L44sVbTPNS+uD2kRISuo8B39Y79rOo0Kw0hzupTmiVtftQYCZl87mwldhh2L9Aquw==
+
+vue-slicksort@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/vue-slicksort/-/vue-slicksort-1.1.3.tgz#f8e0a1623bfb8aa39db683e28ac7bea5d9a2d9dc"
+  integrity sha512-zGa0t2tyYOJpHsg2eqLZS095ZLHJsyPBoxlRZ/UUzE17VUM0skdz0MElp3/LHrUuK+MzD7wV2cAPZ+LNq6C/nw==
 
 vue-style-loader@^4.1.0:
   version "4.1.2"

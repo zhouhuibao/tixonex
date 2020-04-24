@@ -13,7 +13,7 @@
 
       <div class="operationRight">
         <el-button-group>
-          <search-list @getValue="getChild" :dataList="this.$store.state.article.searchData"></search-list>
+          <search-list @getValue="getChild" :dataList="typeList"></search-list>
           <el-button type="primary" icon="el-icon-refresh-left" @click="refresh()">刷新</el-button>
         </el-button-group>
         <el-button-group>
@@ -46,9 +46,10 @@
         >
       </el-table-column>
       <el-table-column
+        prop="type"
         label="类型"
       >
-        <template slot-scope="scope">{{ switchType(scope.row.type)  }}</template>
+        <!-- <template slot-scope="scope">{{ switchType(scope.row.type)  }}</template> -->
       </el-table-column>
       <el-table-column label="状态">
         <template slot-scope="scope">{{ scope.row.status === 'SHOW' ? '启用' : '禁用' }}</template>
@@ -101,6 +102,7 @@ import { isEmpty, dataType } from '@/utils/auth'
 export default {
     name:'articleManage',
     data() {
+      const {searchData} = this.$store.state.article
         return {
           loading:false,
           tableData:[],
@@ -108,15 +110,23 @@ export default {
           pageNo:1,
           pageSize:10,
           total:0,
-          // typeList:this.$store.article.typeList
+          typeList:searchData
         }
     },
-    created(){
-      this.getArticleByLocaleList()
-      console.log(this.$store.state.article.typeList)
-    },
     mounted(){
-
+      this.getArticleByLocaleList()
+      this.$store.dispatch({
+          type:'article/getArticleType'
+      })
+    },
+   
+    watch:{
+        '$store.state.article.typeList':{
+            handler(newVal){
+                this.typeList[0].option = newVal
+            },
+            deep:true
+        }
     },
     methods:{
       editData(id){
@@ -148,7 +158,6 @@ export default {
       },
       disabledData(data,status){
         disableArticles({articleIds:data},status).then(res=>{
-          console.log(res)
           if(res.statusCode === 0){
             this.getArticleByLocaleList()
           }

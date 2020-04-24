@@ -74,6 +74,14 @@ export default {
             type:String
         }
     },
+    watch: {
+        dataList: {
+    　　　　handler(newValue, oldValue) {
+                this.formLabelAlign.content = newValue
+    　　　　},
+    　　　　deep: true
+　　    }
+    },
     mounted(){
         const {dataList} = this;
         const arr =[]

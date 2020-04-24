@@ -1,4 +1,4 @@
-import {getUserAuthList,getUserRoleList} from '@/api/backstageSetting'
+import {getUserAuthList,getUserRoleList,getUserList} from '@/api/backstageSetting'
 
 const HTTPtype=[
     {
@@ -41,7 +41,11 @@ const operationLogSearch=[
         title:'User',
         type:'select',
         id:'userName',
-        option:[]
+        option:[],
+        optionObj:{
+            key:'username',
+            value:'id'
+        },
     },
     {
         title:'Method',
@@ -86,6 +90,7 @@ const state={
     roleList:[],
     authList:[],
     HTTPtype,
+    userList:[],
     operationLogSearch
 }
 
@@ -119,6 +124,19 @@ const actions={
                 const {statusCode,content} = response
                 if(statusCode === 0 ){
                     state.roleList = content
+                    resolve()
+                }
+            }).catch(error => {
+              reject(error)
+            })
+        })
+    },
+    getUsersList({ commit, state }) {
+        return new Promise((resolve, reject) => {
+            getUserList(authOrRoleParmas).then(response => {
+                const {statusCode,content} = response
+                if(statusCode === 0 ){
+                    state.userList = content
                     resolve()
                 }
             }).catch(error => {

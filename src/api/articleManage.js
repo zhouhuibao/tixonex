@@ -37,6 +37,17 @@ export function detailArticles(data) {
   })
 }
 
+// 获取文章类型列表
+export function articleType(data) {
+  return request({
+    url: 'admin/article/type',
+    method: 'get',
+    data
+  })
+}
+
+
+
 // 创建/修改文章
 export function addArticles(data,type) {
   return request({

@@ -12,13 +12,13 @@
 
       <div class="operationRight">
         <el-button-group>
-          <search-list @getValue="getChild" :dataList="this.$store.state.backstageSetting.operationLogSearch"></search-list>
+          <search-list @getValue="getChild" :dataList="typeList"></search-list>
           <el-button type="primary" icon="el-icon-refresh-left" @click="refresh()">刷新</el-button>
         </el-button-group>
         <el-button-group>
           <el-button type="primary" @click="exportDate"  :loading="exportLoading" icon="el-icon-s-promotion">导出</el-button>
         </el-button-group>
-      </div>
+      </div> 
     </div>
 
     <el-table
@@ -92,13 +92,14 @@
 
 <script>
 
-import {getOperationLog,exportOperationLog,deleteArticles} from '@/api/backstageSetting'
+import {getOperationLog,exportOperationLog,delOperationLog} from '@/api/backstageSetting'
 import SearchList from '@/components/SearchList'
 import { isEmpty, dataType,download } from '@/utils/auth'
 
 export default {
     name:'operationLog',
     data() {
+      const {operationLogSearch} = this.$store.state.backstageSetting
         return {
           loading:false,
           tableData:[],
@@ -106,16 +107,29 @@ export default {
           pageNo:1,
           pageSize:10,
           total:0,
-          exportLoading:false
-          // typeList:this.$store.article.typeList
+          exportLoading:false,
+          typeList:operationLogSearch
         }
     },
     created(){
       this.getArticleByLocaleList()
-      console.log(this.$store.state.article.typeList)
     },
     mounted(){
-
+      this.$store.dispatch({
+          type:'backstageSetting/getUsersList'
+      })
+    },
+    watch:{
+      '$store.state.backstageSetting.userList':{
+            handler(newValue) {
+              const {operationLogSearch} = this.$store.state.backstageSetting
+                operationLogSearch[1].option = newValue
+                console.log(operationLogSearch)
+                this.typeList = operationLogSearch
+                console.log(this.typeList )
+    　　　　},
+    　　　　deep: true
+      } 
     },
     methods:{
       exportDate(data){
@@ -129,16 +143,7 @@ export default {
         }
         exportOperationLog(parmas).then(res=>{
           const {statusCode,errorMessage}  =res
-          // if(statusCode !== 0){
-          //   this.$message({
-          //     message: errorMessage,
-          //     type: 'error'
-          //   });
-          // }else{
-          //   download(res,'后台用户操作日志')
-          // }
             download(res,'后台用户操作日志')
-          
            this.exportLoading = false
         }).catch(()=>{
            this.exportLoading = false
@@ -148,7 +153,6 @@ export default {
       getChild(data){
         this.pageNo = 1;
         this.getArticleByLocaleList(data)
-        console.log(data)
       },
       refresh(){
         this.pageNo = 1;
@@ -156,7 +160,7 @@ export default {
       },
       
       deleteData(id){
-        deleteArticles({articleIds:id}).then(res=>{
+        delOperationLog({id}).then(res=>{
           if(res.statusCode === 0){
             this.getArticleByLocaleList()
           }

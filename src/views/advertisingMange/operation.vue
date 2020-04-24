@@ -6,7 +6,7 @@
     <create-form 
       :dataList="dataList"
       @getValue="getChild"
-      width="500px"
+      width="720px"
       labelWidth="120px"
     />
   </div>
@@ -40,6 +40,7 @@ export default {
                 option:adTypeArr,
                 id:'type',
                 required:true,
+                value:'TEXT'
             },
             {
                 title:'显示类型',
@@ -47,6 +48,7 @@ export default {
                 option:showTypeArr,
                 id:'clientType',
                 required:true,
+                value:1,
             },
             {
                 title:'语言',
@@ -75,7 +77,7 @@ export default {
                 id:'url',
                 required:true,
                 value:'',
-                fileList:[]
+                fileList:[],
             },
             {
                 title:'广告链接',
@@ -88,7 +90,14 @@ export default {
                 type:'radio',
                 option:statusArr,
                 id:'status',
-                required:true
+                required:true,
+                value:'SHOW'
+            },
+            {
+                title:'广告内容',
+                type:'tinymce',
+                id:'content',
+                required:true,
             },
         ],
             pageType:this.$route.query.id ? 'edit' : 'add',
@@ -105,7 +114,7 @@ export default {
     methods:{
         getChild(data){
             const {pageType} = this;
-
+            console.log(data)
 
             if(pageType === 'edit'){
                 data.id = this.id

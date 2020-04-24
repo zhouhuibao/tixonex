@@ -1,59 +1,15 @@
 
-const typeList=[
-    {
-        name:'公告',
-        value:'NOTICE'
-    },
-    {
-        name:'资讯',
-        value:'NEWS'
-    },
-    {
-        name:'帮助',
-        value:'HELP'
-    },
-    {
-        name:'注册协议',
-        value:'AGREEMENT'
-    },
-    {
-        name:'费用说明',
-        value:'FEE'
-    },
-    {
-        name:'服务条款',
-        value:'SERVICE'
-    },
-    {
-        name:'隐私声明',
-        value:'PRIVACY'
-    },
-    {
-        name:'加入我们',
-        value:'JOIN_US'
-    },
-    {
-        name:'平台说明',
-        value:'PLATFORM'
-    },
-    {
-        name:'商家认证公告',
-        value:'MERCHANT' 
-    },
-    {
-        name:'所有类型',
-        value:'ALL'
-    },
-]
+import {articleType} from '@/api/articleManage'
+const typeList = []
 
 const statusArr=[
     {
         key:'启用',
-        value:'1'
+        value:'SHOW'
     },
     {
         key:'禁用',
-        value:'2'
+        value:'HIDE'
     }
 ]
 
@@ -71,16 +27,14 @@ const localeArr=[
 
 const state={
     typeList,
+    statusArr,
+    localeArr,
     searchData:[
         {
             title:'类型',
             type:'select',
             id:'type',
-            option:typeList,
-            optionObj:{
-                key:'name',
-                value:'value'
-            }
+            option:typeList
         },
         {
             title:'文章状态',
@@ -102,7 +56,23 @@ const mutations={
 }
 
 const actions={
-    
+    getArticleType({ commit, state }) {
+        return new Promise((resolve, reject) => {
+            articleType().then(response => {
+                const {statusCode,content} = response
+                const arr = [];
+                content.forEach(item=>{
+                    arr.push({key:item,value:item})
+                })
+                if(statusCode === 0 ){
+                    state.typeList = arr
+                    resolve()
+                }
+            }).catch(error => {
+              reject(error)
+            })
+        })
+    }
 }
 export default {
     namespaced: true,

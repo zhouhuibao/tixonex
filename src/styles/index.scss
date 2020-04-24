@@ -79,3 +79,7 @@ div:focus {
 .searchWarpper .el-dialog__header{
   border-bottom: 1px solid #ccc;
 }
+
+#tiny-mce , #tiny-mce  *, #tiny-mce .mce-widget, #tiny-mce .mce-widget *, #tiny-mce .mce-reset{
+  white-space:initial
+}

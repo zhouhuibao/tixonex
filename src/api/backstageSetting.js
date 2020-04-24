@@ -47,6 +47,15 @@ export function exportOperationLog(data) {
     })
 }
 
+// 删除后台用户操作日志
+export function delOperationLog(data) {
+  return request({
+    url: 'admin/user/delOperationLog',
+    method: 'post',
+    data
+  })
+}
+
 // 创建/修改角色
 export function roleAddOrEdit(data,type) {
   return request({
@@ -142,5 +151,14 @@ export function exportUserList(data) {
     data,
     exportsExcel:true,
     responseType: 'blob'
+  })
+}
+
+// 菜单列表
+export function menuList(data) {
+  return request({
+    url: 'admin/user/menuList',
+    method: 'post',
+    data
   })
 }
