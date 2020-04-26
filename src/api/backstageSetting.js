@@ -157,7 +157,35 @@ export function exportUserList(data) {
 // 菜单列表
 export function menuList(data) {
   return request({
-    url: 'admin/user/menuList',
+    url: 'admin/user/getMenuParentList',
+    method: 'post',
+    data
+  })
+}
+
+// 创建/修改菜单
+export function menuAddOrEdit(data,type) {
+  return request({
+    url: `admin/user/${type === 'add' ? 'addMenu' : 'updateMenu'}`,
+    method: 'post',
+    data,
+  })
+}
+
+// 删除菜单
+export function delMenu(data) {
+  return request({
+    url: 'admin/user/delMenu',
+    method: 'post',
+    data
+  })
+}
+
+
+// 根据id查询菜单详情
+export function selectAdminMenuById(data,type) {
+  return request({
+    url: `admin/user/${type === '修改子菜单' ? 'selectAdminMenuById' : 'selectAdminMenuByTitle'}`,
     method: 'post',
     data
   })

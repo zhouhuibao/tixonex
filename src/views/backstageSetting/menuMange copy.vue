@@ -12,54 +12,45 @@
         <el-button type="primary" icon="el-icon-refresh">刷新</el-button>
       </el-button-group>
     </div>
-
-
     <div class='listWrapper'>
-
-      <vuedraggable class="wrapper" v-model="items">
-        <transition-group>
-          <div v-for="(item,index) in items" :key="index">
-            <div class="item clearfix">
-              <div class="itemName pull-left">
-                <span v-if="getType(item.children) ">
-                  <el-button v-if="item.children.length>0" type="text" :class="item.open && item.children.length > 0 ? 'el-icon-minus' : 'el-icon-plus'" @click="silggle(item.title)"></el-button>
-                </span>
-                {{ item.title }}
-                
-              </div>
-              <div class=" pull-right">
-                  <el-button type="text" class="el-icon-circle-plus-outline" @click="openModal('add','添加子菜单',item.title)" title="添加子菜单"></el-button>
-                  <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改菜单',item.title)"></el-button>
-                  <el-button type="text" class="el-icon-delete" @click="clickDel(item)"></el-button>
-              </div>
-
+      <SlickList lockAxis="y" v-model="items">
+        <SlickItem v-for="(item, index) in items" :index="index" :key="index">
+          <div class="item clearfix">
+            <div class="itemName pull-left">
+              <span v-if="getType(item.children) ">
+                <el-button v-if="item.children.length>0" type="text" :class="item.open && item.children.length > 0 ? 'el-icon-minus' : 'el-icon-plus'" @click="silggle(item.title)"></el-button>
+              </span>
+              {{ item.title }}
             </div>
-
-
-            <div v-if="getType(item.children)" class="children" :style="`margin-left:20px;height:${!item.open ? 0 : 'auto'};overflow:hidden;transition:.2s`">
-              <vuedraggable v-model="items.item">
-                <div v-for="(nodeItem,x) in item.children" :key="x" >
-                  <div class="item clearfix">
-                    <div class="itemName pull-left">
-                      <i :class="nodeItem.icon"></i>
-                      {{ nodeItem.title }}
-                      <el-button type="text" @click="routePush(nodeItem.uri)">{{nodeItem.uri}}</el-button>
-                    </div>
-                    <div class="itemName pull-right">
-                      <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改子菜单',nodeItem.id)"></el-button>
-                      <el-button type="text" class="el-icon-delete" @click="openModal('edit','删除节点',0)"></el-button>
-                    </div>
-
-                  </div>
-                </div>
-              </vuedraggable>
+            <div class=" pull-right">
+                <el-button type="text" class="el-icon-circle-plus-outline" @click="openModal('add','添加子菜单',item.title)" title="添加子菜单"></el-button>
+                <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改菜单',item.title)"></el-button>
+                <el-button type="text" class="el-icon-delete" @click="clickDel(item)"></el-button>
             </div>
 
           </div>
-        </transition-group>
-      </vuedraggable>
+              <div v-if="getType(item.children)" class="children" :style="`margin-left:20px;height:${!item.open ? 0 : 'auto'};overflow:hidden;transition:.2s`">
+                   <SlickList lockAxis="y" v-model="item.children">
+                    <SlickItem v-for="(nodeItem, x) in item.children" :index="x" :key="x">
+                      <div class="item clearfix">
+                        <div class="itemName pull-left">
+                          <i :class="nodeItem.icon"></i>
+                          {{ nodeItem.title }}
+                          <el-button type="text" @click="routePush(nodeItem.uri)">{{nodeItem.uri}}</el-button>
+                        </div>
+                        <div class="itemName pull-right">
+                          <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改子菜单',nodeItem.id)"></el-button>
+                          <el-button type="text" class="el-icon-delete" @click="openModal('edit','删除节点',0)"></el-button>
+                        </div>
 
-      
+                      </div>
+                      
+                    </SlickItem>
+                  </SlickList> 
+              </div>
+              
+        </SlickItem>
+      </SlickList>
     </div>
     
     
@@ -70,7 +61,7 @@
 
 <script>
 //  引入组件
-import vuedraggable from 'vuedraggable';
+import { SlickList, SlickItem } from 'vue-slicksort'
 import {dataType} from '@/utils/auth'
 
 import addOrEditMenu from './components/addOrEditMenu'
@@ -99,7 +90,7 @@ export default {
           const list = []
           for(let key  in content){
             const obj ={
-              title:key.split(',')[1],
+              title:key,
               children:content[key],
               open:true
             }
@@ -116,13 +107,11 @@ export default {
         })
     },
     components: {
-        addOrEditMenu,
-        vuedraggable
+        SlickList,
+        SlickItem,
+        addOrEditMenu
     },
     methods:{
-      spanClick(){
-        console.log(1)
-      },
       routePush(path){
         this.$router.push(path)
       },

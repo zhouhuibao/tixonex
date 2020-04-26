@@ -15,7 +15,9 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 import filters from '@/filters' // permission control
+import iconPicker from 'vue-fontawesome-elementui-icon-picker';
 
+Vue.use(iconPicker);
 // 注册全局过滤器
 Object.keys(filters).forEach(key => {  
   Vue.filter(key, filters[key])  

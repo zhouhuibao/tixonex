@@ -38,7 +38,7 @@ const download = (data,name) => {
   link.style.display = 'none'
   link.href = url
   link.setAttribute('download', `${name}.xlsx`)
-  
+
   document.body.appendChild(link)
   link.click()
 }

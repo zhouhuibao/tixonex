@@ -22,8 +22,15 @@
                 :value="item.value"
                 v-model="item.value"
             >
-
             </Editor>
+            
+             <icon-picker
+                v-if="item.type === 'icon'"
+                v-model="item.value"
+             >
+             </icon-picker>
+            
+
             <el-input autocomplete="new-password" v-if="item.type === 'text'" :show-password="item.password || false" :disabled="item.disabled || false" v-model="item.value" :placeholder="`请输入${item.title}`" ></el-input>
             <el-input type="textarea"  :autosize="{ minRows: 4, maxRows: 10}" v-if="item.type === 'textarea'" :disabled="item.disabled || false" v-model="item.value" :placeholder="`请输入${item.title}`" ></el-input>
             <el-input-number v-if="item.type === 'number'" v-model="item.value" :min="0" :placeholder="`请输入${item.title}`" ></el-input-number>
