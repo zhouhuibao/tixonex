@@ -1,16 +1,27 @@
 <template>
-  <div v-if="!item.hidden">
-    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+  <div v-if="!item.hidden" class="menuWrapper">
+    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow" >
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
+          <!-- <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" /> -->
+          <div class="el-tooltip">
+            <i v-if="isShowIcon(item.meta.icon)" :class="`${onlyOneChild.meta.icon||(item.meta&&item.meta.icon)} svg-icon` "></i>
+            <span>{{onlyOneChild.meta.title}}</span>
+          </div>
+
+          <!-- <i :class="`${onlyOneChild.meta.icon||(item.meta&&item.meta.icon)} svg-icon` "></i>
+            <span>{{onlyOneChild.meta.title}}</span> -->
+          
         </el-menu-item>
       </app-link>
     </template>
 
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
+        <i v-if="isShowIcon(item.meta.icon)" :class="`${item.meta && item.meta.icon} svg-icon`"></i>
+        <span>{{item.meta.title}}</span>
+          
+        <!-- <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" /> -->
       </template>
       <sidebar-item
         v-for="child in item.children"
@@ -30,6 +41,7 @@ import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
 import FixiOSBug from './FixiOSBug'
+import { isEmpty } from '../../../utils/auth'
 
 export default {
   name: 'SidebarItem',
@@ -57,6 +69,9 @@ export default {
     return {}
   },
   methods: {
+    isShowIcon(icon){
+      return isEmpty(icon)
+    },
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
@@ -93,3 +108,30 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+#app .hideSidebar .submenu-title-noDropdown .el-tooltip{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  box-sizing: border-box;
+  .svg-icon{
+    margin-right: 20px;
+
+  }
+}
+.menuWrapper{
+  .el-submenu [class^="fa"]{
+  width: auto;
+}
+.svg-icon{
+  width: 14px !important;
+  font-size: 14px !important;
+}
+
+}
+
+</style>

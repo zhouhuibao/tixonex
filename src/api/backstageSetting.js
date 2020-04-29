@@ -154,6 +154,19 @@ export function exportUserList(data) {
   })
 }
 
+// 导出后台角色列表
+export function exportRoleList(data) {
+  return request({
+    url: 'admin/user/exportRoleList',
+    method: 'post',
+    data,
+    exportsExcel:true,
+    responseType: 'blob'
+  })
+}
+
+
+
 // 菜单列表
 export function menuList(data) {
   return request({
@@ -181,11 +194,20 @@ export function delMenu(data) {
   })
 }
 
+// 权限详情
+export function permissionDetails(data) {
+  return request({
+    url: 'admin/user/permissionDetails',
+    method: 'post',
+    data
+  })
+}
 
 // 根据id查询菜单详情
 export function selectAdminMenuById(data,type) {
   return request({
-    url: `admin/user/${type === '修改子菜单' ? 'selectAdminMenuById' : 'selectAdminMenuByTitle'}`,
+    url: 'admin/user/selectAdminMenuById',
+    // url: `admin/user/${type === '修改子菜单' ? 'selectAdminMenuById' : 'selectAdminMenuByTitle'}`,
     method: 'post',
     data
   })

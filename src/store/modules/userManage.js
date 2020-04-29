@@ -1,5 +1,4 @@
-
-
+import {nationalCode} from '@/api/user'
 const statusArr=[
     {
         key:'正常',
@@ -8,6 +7,17 @@ const statusArr=[
     {
         key:'禁用',
         value:0
+    }
+]
+
+const examineArr=[
+    {
+        key:'审核通过',
+        value:1
+    },
+    {
+        key:'审核失败',
+        value:3
     }
 ]
 
@@ -313,15 +323,32 @@ const state={
     groupArr,
     changeList,
     accountList,
-    coinList
+    coinList,
+    examineArr,
+    nationalCodeList:[]
 }
 
+
+
 const mutations={
-    
+    setNationalCode: (state, list) => {
+        state.nationalCodeList = list
+    }
 }
 
 const actions={
-    
+    getNationalCode({ commit,state },payload){
+        return new Promise((resolve,reject)=>{
+            nationalCode().then(res=>{
+                if(res.statusCode === 0){
+                    commit('setNationalCode',res.content)
+                    resolve(res.content)
+                }
+            })
+        }).catch(error => {
+            reject(error)
+        })
+    }
 }
 export default {
     namespaced: true,

@@ -24,14 +24,14 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: true,
+    // open: true,
     // overlay: {
     //   warnings: false,
     //   errors: true
@@ -138,43 +138,3 @@ module.exports = {
       )
   }
 }
-
-
-// module.exports = {
-//   publicPath: './', // 配置打包时候的路径
-//   lintOnSave: true,
-//   chainWebpack: (config)=>{
-//       config.resolve.symlinks(true)    // 热更新
-//       // config.resolve.alias.set('@', resolve('src'))  // 设置@代表src路径
-//   },
-//   devServer: {
-//       open: true, // 打开服务的时候打开浏览器
-//       proxy: {  // 代理请求
-//           '/admin': {
-//               target: 'http://192.168.0.107:8089',
-//               ws: true,
-//               changeOrigin: true,
-//               pathRewrite: {
-//                   '^/admin': '/admin'
-//               }
-//           },
-//           '/gcgj-fdfs': {
-//             target: 'http://91gcgj.com/',
-//             ws: true,
-//             changeOrigin: true,
-//             pathRewrite: {
-//                 '^/gcgj-fdfs': '/gcgj-fdfs'
-//             }
-//         },
-//       }
-//   },
-//   css: {
-//       loaderOptions: {
-//         less:{
-//           globalVars: {
-//             primary: '#fff'
-//           }
-//         }
-//       }
-//   }
-// }

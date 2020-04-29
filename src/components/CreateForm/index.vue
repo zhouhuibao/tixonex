@@ -24,14 +24,20 @@
             >
             </Editor>
             
-             <icon-picker
-                v-if="item.type === 'icon'"
-                v-model="item.value"
-             >
-             </icon-picker>
+            <div class="picker-icon" v-if="item.type === 'icon'">
+                <icon-picker
+                    v-model="item.value"
+                >
+                </icon-picker>
+                <div class="delICon" @click="delIcon(item)">
+                    <i class="el-icon-circle-close"></i>
+                </div>
+            </div>
+             
             
 
-            <el-input autocomplete="new-password" v-if="item.type === 'text'" :show-password="item.password || false" :disabled="item.disabled || false" v-model="item.value" :placeholder="`请输入${item.title}`" ></el-input>
+            <el-input autocomplete="new-password" v-if="item.type === 'password'" type="password"  :disabled="item.disabled || false" v-model="item.value" :placeholder="`请输入${item.title}`" />
+            <el-input v-if="item.type === 'text'" :show-password="item.password || false" :disabled="item.disabled || false" v-model="item.value" :placeholder="`请输入${item.title}`" ></el-input>
             <el-input type="textarea"  :autosize="{ minRows: 4, maxRows: 10}" v-if="item.type === 'textarea'" :disabled="item.disabled || false" v-model="item.value" :placeholder="`请输入${item.title}`" ></el-input>
             <el-input-number v-if="item.type === 'number'" v-model="item.value" :min="0" :placeholder="`请输入${item.title}`" ></el-input-number>
             
@@ -105,13 +111,9 @@
                 :before-remove="beforeRemove"
                 :file-list="item.fileList"
                 :disabled="item.disabled || false"
-
-                
-  list-type="picture"
-
-
+                list-type="picture"
             >
-                <el-button size="small" type="primary">点击上传<i class="el-icon-upload el-icon--right"></i></el-button>
+                <el-button :disabled="item.disabled || false" size="small" type="primary">点击上传<i class="el-icon-upload el-icon--right"></i></el-button>
                 
                 <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
             </el-upload>
@@ -126,10 +128,14 @@
         </el-form-item>
 
         <el-form-item>
-            <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
-            <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
+            <el-button class="createFormSubmit" type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
+            <el-button v-if="resetBtn" class="createFormReset" @click="resetForm('dynamicValidateForm')">重置</el-button>
         </el-form-item>
         </el-form>
+
+        <el-dialog title="查看图片" :visible.sync="dialogVisible">
+            <el-image width="100%" :src="dialogImageUrl" alt=""> </el-image>
+        </el-dialog>
     </div>
       
 </template>
@@ -144,7 +150,9 @@ export default {
         dynamicValidateForm: {
           domains: [],
         },
-        fileList:[]
+        fileList:[],
+        dialogImageUrl: '',
+        dialogVisible: false
       };
     },
     props:{
@@ -155,6 +163,10 @@ export default {
         width:{
             type:String
         },
+        resetBtn:{
+            type:Boolean,
+            default:true
+        }
         
     },
     watch: {
@@ -179,6 +191,15 @@ export default {
         Editor
     },
     methods: {
+        delIcon(data){
+            console.log()
+            this.dynamicValidateForm.domains.forEach(item=>{
+                if(item.id === data.id){
+                    item.value=''
+                }
+            })
+            
+        },
         filterArr(obj){
             const {option,optionObj} = obj;
             const arr = []
@@ -304,7 +325,8 @@ export default {
 
         },
         handlePreview(file) {
-            console.log(file);
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
         },
         
         beforeRemove(file, fileList) {
@@ -316,5 +338,26 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.picker-icon{
+    position: relative;
+    .delICon{
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 30px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        cursor: pointer;
+        i{
+            font-size: 16px;
+        }
+        &:hover{
+            i{
+                color: red;
+            }
+        }
+    }
+}
     
 </style>

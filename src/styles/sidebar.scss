@@ -34,7 +34,7 @@
     }
 
     .el-scrollbar {
-      height: 100%;
+      height: calc(100% - 50px);
     }
 
     &.has-logo {
@@ -206,4 +206,8 @@
       border-radius: 20px;
     }
   }
+}
+
+.el-dialog{
+  margin-bottom: 15vh;
 }

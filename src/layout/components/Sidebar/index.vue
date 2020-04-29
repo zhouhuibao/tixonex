@@ -1,6 +1,6 @@
 <template>
   <div :class="{'has-logo':showLogo}">
-    <logo v-if="showLogo" :collapse="isCollapse" />
+    <logo :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -12,7 +12,8 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="route in menuList" :key="route.path" :item="route" :base-path="route.path" />
+        <!-- <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" /> -->
       </el-menu>
     </el-scrollbar>
   </div>
@@ -23,9 +24,16 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
+import Layout from '@/layout'
+import { dataType } from '../../../utils/auth'
 
 export default {
   components: { SidebarItem, Logo },
+  data () {
+    return {
+      menuList:[]  
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar'
@@ -51,6 +59,20 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  watch:{
+    '$store.state.user.menuList':{
+      handler(newVal){
+        this.menuList = newVal
+      },
+      deep:true
+    }
+  },
+  mounted(){
+    this.$store.dispatch('user/getMenuList', {payload:this.$store.state.user.userInfo.id})
+  },
+  methods:{
+    
   }
 }
 </script>

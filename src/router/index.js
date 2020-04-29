@@ -43,49 +43,48 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-  // {
-  //   path: '/',
-  //   component: Layout,
-  //   redirect: '/dashboard',
-  //   children: [{
-  //     path: 'dashboard',
-  //     name: 'Dashboard',
-  //     component: () => import('@/views/userModules/userManage'),
-  //     meta: { title: 'Dashboard', icon: 'dashboard' }
-  //   }],
-  //   hidden: true
-  // },
   {
     path: '/',
     component: Layout,
     redirect: '/user-modules/user-manage',
+    hidden: true
+  },
+  {
+    path: '/user-modules',
+    component: Layout,
     name: '用户模块',
     meta: { title: '用户模块', icon: 'example' },
     children: [
       {
-      path: 'user-modules/user-manage',
+      path: 'user-manage',
       name: '用户管理',
-      component: () => import('@/views/userModules/userManage'),
+      component: () => import('@/views/userModules/userManage/index'),
       meta: { title: '用户管理'}
     },
     {
-      path: 'user-modules/user-assets',
+      path: 'user-assets',
       name: '用户资产',
       component: () => import('@/views/userModules/userAssets'),
       meta: { title: '用户资产'}
     },
     {
-      path: 'user-modules/water-information',
+      path: 'water-information',
       name: '全栈流水信息',
       component: () => import('@/views/userModules/waterInformation'),
       meta: { title: '全栈流水信息'}
     },
     {
-      path: 'user-modules/asset-statistics',
+      path: 'asset-statistics',
       name: '资产统计',
       component: () => import('@/views/userModules/assetStatistics'),
       meta: { title: '资产统计'}
     },
+    {
+      path: 'operation',
+      component: () => import('@/views/userModules/userManage/userOperation'),
+      meta: { title: '操作' },
+      hidden:true
+    }
   ]
   },
   {
@@ -158,6 +157,12 @@ export const constantRoutes = [
     name: '拨币/奖励',
     meta: { title: '拨币/奖励', icon: 'example' },
     children: [
+      {
+        path: 'the-Coin',
+        name: '拨币',
+        component: () => import('@/views/theCoinReward/theCoin'),
+        meta: { title: '拨币' }
+      },
       {
         path: 'theCoin-history',
         name: '拨币记录',
@@ -380,7 +385,20 @@ export const constantRoutes = [
       
     ]
   },
-
+  {
+    path: '/userSettings',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Form',
+        component: () => import('@/views/userSettings/index'),
+        meta: { title: '用户设置'},
+        hidden:true
+      }
+    ]
+  },
+  
 
   // {
   //   path: '/example',

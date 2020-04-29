@@ -169,6 +169,7 @@
     <Detailed
         :visible="detailedVisible"
         :tableData="detailedTableData"
+        @changeDrawer="changeDrawer"
     />
 
     <el-dialog
@@ -204,7 +205,7 @@
 
 import {userList,userIsAble,exportUserList,resetPayPassword,idCardPass,updateGroupType} from '@/api/user'
 import SearchList from '@/components/SearchList'
-import Detailed from './components/detailed'
+import Detailed from './../components/detailed'
 import { isEmpty, dataType,download,getUserInfo } from '@/utils/auth'
 
 export default {
@@ -244,17 +245,16 @@ export default {
         return str
       },
       editData(id){
-        this.$message({
-            message:'开发中',
-          })
-        // this.$router.push({
-        //   path:'/article-manage/article-manage-addOrEditArticle',
-        //   query: {
-        //     id
-        //   }
-        // })
+        this.$router.push({
+          path:'/user-modules/operation',
+          query:{
+            id
+          }
+        })
       },
-      
+      changeDrawer(v){
+        this.detailedVisible = v
+      },
 
       getChild(data){
         this.pageNo = 1;

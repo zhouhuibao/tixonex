@@ -44,16 +44,14 @@ export default {
             },
             {
                 title:'密码',
-                type:'text',
+                type:'password',
                 id:'password',
-                password:true,
                 required:true,
             },
             {
                 title:'确认密码',
-                type:'text',
+                type:'password',
                 id:'feeRate',
-                password:true,
                 required:true,
             },
             {

@@ -9,7 +9,11 @@
         <div class="avatar-wrapper">
           <div class="clearfix">
             <div class="pull-left">
-              <img src="http://103.101.207.10:8800/vendor/laravel-admin/AdminLTE/dist/img/user2-160x160.jpg" class="user-avatar">
+              <el-image
+               class="user-avatar"
+              :src="userPhoto"
+              >
+              </el-image>
             </div>
             <div class="pull-right">
               {{userName}}
@@ -31,9 +35,9 @@
           <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
             <el-dropdown-item>Docs</el-dropdown-item>
           </a> -->
-          <!-- <el-dropdown-item @click.native="logout">
-            <span style="display:block;">个人信息</span>
-          </el-dropdown-item> -->
+          <el-dropdown-item @click.native="clickUser">
+            <span style="display:block;">用户设置</span>
+          </el-dropdown-item>
           <el-dropdown-item @click.native="logout">
             <span style="display:block;">退出登录</span>
           </el-dropdown-item>
@@ -54,8 +58,20 @@ export default {
     Hamburger
   },
   data(){
+    const {name,avatar} =getUserInfo()
     return {
-      userName:getUserInfo().userName
+      userName:name,
+      userPhoto:avatar,
+    }
+  },
+  watch:{
+    '$store.state.user.userInfo':{
+        handler(newValue) {
+          console.log(newValue)
+          this.userName = newValue.name
+          this.userPhoto = newValue.avatar
+　　　　 },
+　　　　deep: true
     }
   },
   created(){
@@ -82,8 +98,12 @@ export default {
         })
       },500)
       
+    },
+    clickUser(){
+      this.$router.push('/userSettings/index')
     }
   }
+  
 }
 </script>
 
@@ -144,7 +164,7 @@ export default {
 
       .avatar-wrapper {
         // margin-top: 5px;
-          cursor: pointer;
+        cursor: pointer;
         position: relative;
         height: 50px;
         padding-top: 5px;
@@ -153,6 +173,7 @@ export default {
           height: 40px;
           border-radius: 10px;
           border-radius: 50%;
+          margin-right: 10px;
         }
 
         .el-icon-caret-bottom {

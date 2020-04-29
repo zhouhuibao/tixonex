@@ -142,7 +142,7 @@
 
 <script>
 
-import {marketList,disableArticles,delAdvertiseBatch} from '@/api/trading'
+import {marketList,closeOpenMarket} from '@/api/trading'
 import { isEmpty, dataType } from '@/utils/auth'
 
 export default {
@@ -190,17 +190,13 @@ export default {
       add(){
         this.$router.push('/trading/tMSOperation')
       },
-      deleteData(id){
-        delAdvertiseBatch({ids:id}).then(res=>{
-          if(res.statusCode === 0){
-            this.getArticleByLocaleList()
-          }
-        })
-      },
       disabledData(data,status){
-        disableArticles({articleIds:data},status).then(res=>{
-          console.log(res)
+        closeOpenMarket({marketId:data},status).then(res=>{
           if(res.statusCode === 0){
+            this.$message({
+              message:'操作成功',
+              type:'success'
+            })
             this.getArticleByLocaleList()
           }
         })

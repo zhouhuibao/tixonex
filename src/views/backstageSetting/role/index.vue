@@ -99,7 +99,7 @@
 
 <script>
 
-import {getUserRoleList,disableArticles,delRole} from '@/api/backstageSetting'
+import {getUserRoleList,disableArticles,delRole,exportRoleList} from '@/api/backstageSetting'
 import SearchList from '@/components/SearchList'
 import { isEmpty, dataType,download } from '@/utils/auth'
 
@@ -139,7 +139,7 @@ export default {
       },
       exportDate(data){
         this.exportLoading = true
-        exportUserList().then(res=>{
+        exportRoleList({id:0}).then(res=>{
           download(res,'角色')
            this.exportLoading = false
         }).catch(()=>{

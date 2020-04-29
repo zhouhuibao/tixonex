@@ -4,66 +4,88 @@
       <el-button-group>
         <el-button type="primary" icon="el-icon-bottom" @click="openAll">展开</el-button>
         <el-button type="primary" @click="closeAll">收起<i class="el-icon-top"></i></el-button>
-        <el-button type="primary" @click="closeAll">收起<i class="el-icon-top"></i></el-button>
       </el-button-group>
       <el-button-group>
-        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="openModal('add','添加顶级菜单',0)">添加顶级菜单</el-button>
-        <el-button type="primary" icon="el-icon-s-claim">保存</el-button>
-        <el-button type="primary" icon="el-icon-refresh">刷新</el-button>
+        <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="openModal('add','添加顶级菜单',0)">添加顶级菜单</el-button> -->
+        <el-button type="primary" icon="el-icon-s-claim" @click="save">保存</el-button>
+        <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       </el-button-group>
     </div>
 
+    <el-row :gutter="20">
+      <el-col :xs="24" :md="12" style="margin-bottom:20px;">
+        <vuedraggable class="wrapper" v-model="items">
+          <transition-group name="fade">
+            <div v-for="(item,index) in items" :key="index">
+              <div class="item clearfix">
+                <div class="itemName pull-left">
+                  <span v-if="getType(item.list) ">
+                    <el-button v-if="item.list.length>0" type="text" :class="item.open && item.list.length > 0 ? 'el-icon-minus' : 'el-icon-plus'" @click="silggle(item.title)"></el-button>
+                  </span>
+                  <i :class="item.icon"></i>
 
-    <div class='listWrapper'>
-
-      <vuedraggable class="wrapper" v-model="items">
-        <transition-group>
-          <div v-for="(item,index) in items" :key="index">
-            <div class="item clearfix">
-              <div class="itemName pull-left">
-                <span v-if="getType(item.children) ">
-                  <el-button v-if="item.children.length>0" type="text" :class="item.open && item.children.length > 0 ? 'el-icon-minus' : 'el-icon-plus'" @click="silggle(item.title)"></el-button>
-                </span>
-                {{ item.title }}
-                
-              </div>
-              <div class=" pull-right">
-                  <el-button type="text" class="el-icon-circle-plus-outline" @click="openModal('add','添加子菜单',item.title)" title="添加子菜单"></el-button>
-                  <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改菜单',item.title)"></el-button>
-                  <el-button type="text" class="el-icon-delete" @click="clickDel(item)"></el-button>
-              </div>
-
-            </div>
-
-
-            <div v-if="getType(item.children)" class="children" :style="`margin-left:20px;height:${!item.open ? 0 : 'auto'};overflow:hidden;transition:.2s`">
-              <vuedraggable v-model="items.item">
-                <div v-for="(nodeItem,x) in item.children" :key="x" >
-                  <div class="item clearfix">
-                    <div class="itemName pull-left">
-                      <i :class="nodeItem.icon"></i>
-                      {{ nodeItem.title }}
-                      <el-button type="text" @click="routePush(nodeItem.uri)">{{nodeItem.uri}}</el-button>
-                    </div>
-                    <div class="itemName pull-right">
-                      <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改子菜单',nodeItem.id)"></el-button>
-                      <el-button type="text" class="el-icon-delete" @click="openModal('edit','删除节点',0)"></el-button>
-                    </div>
-
-                  </div>
+                  {{ item.title }}
                 </div>
-              </vuedraggable>
+                <div class=" pull-right">
+                    <el-button type="text" class="el-icon-circle-plus-outline" @click="openModal('add','添加子菜单',item.id)" title="添加子菜单"></el-button>
+                    <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改菜单',item.id)"></el-button>
+                    <el-popconfirm
+                      title="确定删除该菜单吗"
+                      @onConfirm="clickDel(item.title)"
+                    >
+                      <el-button  slot="reference" type="text" class="el-icon-delete"></el-button>
+                    </el-popconfirm>
+                </div>
+
+              </div>
+
+              <el-collapse-transition>
+                <div v-show="item.open">
+                  <div v-if="getType(item.list)" class="list" :style="`margin-left:20px;`">
+                    <vuedraggable v-model="items.item">
+                      <div v-for="(nodeItem,x) in item.list" :key="x" >
+                        <div class="item clearfix">
+                          <div class="itemName pull-left">
+                            <i :class="nodeItem.icon"></i>
+                            {{ nodeItem.title }}
+                            <el-button type="text" @click="routePush(`${item.uri}/${nodeItem.uri}`)">{{`${item.uri}/${nodeItem.uri}`}}</el-button>
+                          </div>
+                          <div class="itemName pull-right">
+                            <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改子菜单',nodeItem.id)"></el-button>
+                            <el-popconfirm
+                              title="确定删除该菜单吗"
+                              @onConfirm="clickDel(nodeItem.id)"
+                            >
+                              <el-button type="text"  slot="reference" class="el-icon-delete"></el-button>
+                            </el-popconfirm>
+                          </div>
+
+                        </div>
+                      </div>
+                    </vuedraggable>
+                  </div>
+
+                </div>
+                  
+              </el-collapse-transition>
+              
+
             </div>
+          </transition-group>
+        </vuedraggable>
+      </el-col>
+      <el-col :xs="24" :md="12" >
+        <div class="h1Title">添加顶级菜单</div>
+        <create-form 
+          :dataList="dataList"
+          @getValue="getChild"
+          width="100%"
+          labelWidth="120px"
+        />
+      </el-col>
+    </el-row>
 
-          </div>
-        </transition-group>
-      </vuedraggable>
-
-      
-    </div>
-    
-    
-    <addOrEditMenu :visible="visible" @close="closeModal" :title="pageInit.title" :pageType="pageInit.pageType" :id="pageInit.id"  ></addOrEditMenu>
+    <addOrEditMenu :roleList="roleList" :visible="visible" @close="closeModal" :title="pageInit.title" :pageType="pageInit.pageType" :id="pageInit.id"  ></addOrEditMenu>
     
   </div>
 </template>
@@ -71,10 +93,10 @@
 <script>
 //  引入组件
 import vuedraggable from 'vuedraggable';
-import {dataType} from '@/utils/auth'
-
+import {dataType,isEmpty} from '@/utils/auth'
+import CreateForm from '@/components/CreateForm'
 import addOrEditMenu from './components/addOrEditMenu'
-import {menuList} from '@/api/backstageSetting'
+import {menuList,delMenu,menuAddOrEdit,selectAdminMenuById} from '@/api/backstageSetting'
 export default {
     name:'menuMange',
     data() {
@@ -88,49 +110,123 @@ export default {
             title:'',
             pageType:'',
             id:''
-          }
+          },
+          dataList:[
+              {
+                  title:'菜单名称',
+                  type:'text',
+                  id:'title',
+                  required:true,
+              },
+              {
+                  title:'图标',
+                  type:'icon',
+                  id:'icon',
+              },
+              {
+                  title:'路径',
+                  type:'text',
+                  id:'uri',
+                  required:true,
+              },
+              {
+                  title:'角色',
+                  type:'select',
+                  id:'roleId',
+                  multiple:true,
+                  required:true,
+                  option:[],
+                  optionObj:{
+                      key:'name',
+                      value:'id'
+                  },
+                  value:[]
+              },
+          ],
+          roleList:[]
+        }
+    },
+    watch:{
+        '$store.state.backstageSetting.roleList':{
+            handler(newValue) {
+                this.dataList[3].option = newValue
+                this.roleList = newValue
+    　　　　},
+    　　　　deep: true
+        },
+        'items':{
+          handler(newValue) {
+              this.items = newValue
+    　　　　},
+    　　　　deep: true
         }
     },
     mounted(){
-      menuList().then(res=>{
+      this.getMenuList()
+      this.$store.dispatch({
+        type:'backstageSetting/getRoleList'
+      })
+    },
+    
+    components: {
+        addOrEditMenu,
+        vuedraggable,
+        CreateForm
+    },
+    methods:{
+      save(){
+        this.$message({
+            message: `保存成功`,
+            type: 'success'    
+        })
+      },
+      refresh(){
+          this.$router.go(0)
+      },
+      getChild(data){
+            data.parentId =0
+            data.roleId = data.roleId.join(',')
+            data.icon = !isEmpty(data.icon) ? '' : data.icon
 
+            menuAddOrEdit(data,'add').then(res=>{
+                if(res.statusCode === 0){
+                    this.$message({
+                        message: `菜单创建成功`,
+                        type: 'success'    
+                    })
+                    this.getMenuList()
+                    this.$store.dispatch('user/getMenuList', {payload:this.$store.state.user.userInfo.id})
+                }
+            })
+        },
+      getMenuList(){
+        menuList().then(res=>{
           const {content} = res;
-          
           const list = []
-          for(let key  in content){
-            const obj ={
-              title:key.split(',')[1],
-              children:content[key],
-              open:true
-            }
+         
+          content.forEach(item=>{
+            item.open=true
+          })
 
-            list.push(obj)
-
-          }
-          
-          this.items = list
-          console.log(this.items)
+          this.items = content
           // this.loading = false
         }).catch(()=>{
           // this.loading=false
-        })
-    },
-    components: {
-        addOrEditMenu,
-        vuedraggable
-    },
-    methods:{
+      })
+      },
       spanClick(){
-        console.log(1)
+        
       },
       routePush(path){
         this.$router.push(path)
       },
-      closeModal(visible){
+      closeModal(visible,refresh){
         this.visible = visible
+        if(refresh){
+          this.getMenuList()
+        }
       },
       openModal(type,title,id){
-        console.log(type,title,id)
         this.pageInit={
             title,
             pageType:type,
@@ -139,7 +235,27 @@ export default {
         this.visible=true
       },
       clickDel(id){
-        console.log(id)
+        if(dataType(id) === 'String'){
+          selectAdminMenuById({title:id}).then(res=>{
+            if(res.statusCode === 0){
+                const {content} = res
+                this.delateMenu(content.id)
+            }
+          })
+        }else{
+          this.delateMenu(id)
+        }
+      },
+      delateMenu(id){
+        delMenu({id}).then(res=>{
+          if(res.statusCode === 0){
+            this.getMenuList()
+            this.$message({
+              message:'删除成功',
+              type:'success'
+            })
+          }
+        })
       },
       openAll(){
         const {items} = this;
@@ -167,62 +283,27 @@ export default {
         }
         return false
       },
-      toTree(data){
-        // 删除 所有 children,以防止多次调用
-        data.forEach(function (item) {
-            delete item.children;
-        });
- 
-        // 将数据存储为 以 id 为 KEY 的 map 索引数据列
-        var map = {};
-        data.forEach(function (item) {
-            map[item.id] = item;
-        });
-//        console.log(map);
-        var val = [];
-        data.forEach(function (item) {
-          item.open =true
-            // 以当前遍历项，的pid,去map对象中找到索引的id
-            var parent = map[item.parentId];
-            // 好绕啊，如果找到索引，那么说明此项不在顶级当中,那么需要把此项添加到，他对应的父级中
-            if (parent) {
-                (parent.children || ( parent.children = [] )).push(item);
-            } else {
-                //如果没有在map中找到对应的索引ID,那么直接把 当前的item添加到 val结果集中，作为顶级
-                val.push(item);
-            }
-        });
-        return val;
-
-      },
-      getChangeList (e) {
-          window.console.log(e, 'val')
-      },
-      getChangeLists (e) {
-          window.console.log(e, 'vals')
-      },
-      handClick (e) {
-          this.open = !this.open
-          this.form = {}
-          window.console.log(e, 'vals')
-      }
+      
     }
 }
 </script>
 
 <style scoped lang='scss'>
+.h1Title{
+  font-size: 16px;
+  margin: 0 0 20px 0;
+  font-weight: 700;
+  text-align: center;
+}
 .btnWrapper{
   margin-bottom: 20px;
 }
-.listWrapper{
-  max-width: 600px;
-}
+
   .item{
     border:1px solid #ccc;
     line-height: 40px;
     margin-bottom: 5px;
     padding:0 10px;
-    cursor: pointer;
     &:hover{
       .itemName{
         color: #409eff;
@@ -231,7 +312,14 @@ export default {
     i{
       &:hover{
         color: #409eff;
+        cursor: pointer;
       }
     }
   }
+  .fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>

@@ -90,7 +90,8 @@ export function bbDispatch(data) {
     return request({
       url: 'admin/dispatch/dispatch',
       method: 'post',
-      data
+      data,
+      // requestType:'JSON'
     })
 }
 

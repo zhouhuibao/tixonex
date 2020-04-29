@@ -12,7 +12,7 @@
 
 <script>
 
-import {otcConfigDetail,authAddOrEdit} from '@/api/backstageSetting'
+import {permissionDetails,authAddOrEdit} from '@/api/backstageSetting'
 import CreateForm from '@/components/CreateForm'
 import {MathRandom,isEmpty} from '@/utils/auth'
 
@@ -87,7 +87,7 @@ export default {
         },
         
         getDetail(id){
-            otcConfigDetail({id}).then(res=>{
+            permissionDetails({id}).then(res=>{
                 if(res.statusCode === 0){
                     const {content} = res
                     const list = this.dataList;

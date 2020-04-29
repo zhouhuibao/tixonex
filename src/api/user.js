@@ -122,3 +122,58 @@ export function balanceStatList(data) {
   })
 }
 
+// 用户设置
+export function userSetting(data) {
+  return request({
+    url: `admin/user/setting`,
+    method: 'post',
+    data,
+  })
+}
+
+// 用户详情
+export function userSettingDetails(data) {
+  return request({
+    url: `admin/user/settingDetails`,
+    method: 'post',
+    data,
+  })
+}
+
+// 根据用户ID查询用户对应菜单列表--用户权限菜单
+export function userPermissionMenuList(data) {
+  return request({
+    url: `admin/user/userPermissionMenuList`,
+    method: 'post',
+    data,
+  })
+}
+
+// 获取国家区号
+export function nationalCode(data) {
+  return request({
+    url: `admin/user/national-code`,
+    method: 'post',
+    data,
+  })
+}
+
+// 获取用户详情
+export function userDetail(data) {
+  return request({
+    url: `admin/user/detail`,
+    method: 'get',
+    data,
+  })
+}
+
+
+// 修改用户信息
+export function updateUser(data) {
+  return request({
+    url: `admin/user/updateUserInformation`,
+    method: 'post',
+    data,
+    // requestType:'JSON'
+  })
+}

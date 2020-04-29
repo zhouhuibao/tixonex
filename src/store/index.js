@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 import getters from './getters'
 import app from './modules/app'
 import settings from './modules/settings'
@@ -12,7 +13,6 @@ import theCoinReward from './modules/theCoinReward'
 import rollInOrOut from './modules/rollInOrOut'
 import OTCManage from './modules/OTCManage'
 import backstageSetting from './modules/backstageSetting'
-
 
 Vue.use(Vuex)
 
@@ -30,7 +30,10 @@ const store = new Vuex.Store({
     OTCManage,
     backstageSetting
   },
-  getters
+  getters,
+  plugins: [createPersistedState({
+    storage:window.Cookies,
+  })]
 })
 
 export default store

@@ -24,7 +24,48 @@ export default {
     name:'detailed',
     data(){
         return {
-            dataList:[
+            dataList:[],
+            menuInfo:{}
+        }
+    },
+    props:{
+        visible:{
+            type: Boolean,
+            required: true
+        },
+        id:{
+            default: ''
+        },
+        id:{
+            default: ''
+        },
+        pageType:{
+            type:String,
+            default:'add'
+        },
+        title:String,
+        roleList:{
+            type:Array,
+            default:[]
+        }
+        
+    },
+    computed:{
+        show:{
+            get(){
+                return this.visible
+            },
+            set(v){
+                this.$emit('close',v)
+            }
+        }
+    },
+    methods:{
+        close(){
+            this.tableData=[]
+        },
+        open(){
+            const list=[
                 {
                     title:'菜单名称',
                     type:'text',
@@ -35,7 +76,6 @@ export default {
                     title:'图标',
                     type:'icon',
                     id:'icon',
-                    required:true,
                 },
                 {
                     title:'路径',
@@ -49,70 +89,27 @@ export default {
                     id:'roleId',
                     multiple:true,
                     required:true,
-                    option:[],
+                    option:this.roleList,
                     optionObj:{
                         key:'name',
                         value:'id'
                     },
                     value:[]
                 },
-            ],
-        }
-    },
-    props:{
-        visible:{
-            type: Boolean,
-            required: true
-        },
-        id:{
-            default: ''
-        },
-        pageType:{
-            type:String,
-            default:'add'
-        },
-        title:String
-        
-    },
-    watch:{
-        '$store.state.backstageSetting.roleList':{
-            handler(newValue) {
-                this.dataList[3].option = newValue
-    　　　　},
-    　　　　deep: true
-        },
-    },
-    computed:{
-        show:{
-            get(){
-                return this.visible
-            },
-            set(v){
-                this.$emit('close',v)
-            }
-        }
-    },
-    mounted(){
-        this.$store.dispatch({
-            type:'backstageSetting/getRoleList'
-        })
-    },
-    methods:{
-        close(){
-            this.tableData=[]
-        },
-        open(){
+            ]
+            this.dataList =list
             const {id,pageType,title} = this
-            if(pageType === 'edit'){
-                console.log(id,pageType,title)
-                console.log(22)
-                this.getDetail()
-            }
+            this.getDetail()
+            
         },
         getChild(data){
-            const {pageType} = this;
+            const {pageType,menuInfo:{parentId,id}} = this;
+            data.icon = !isEmpty(data.icon) ? '' : data.icon
             if(pageType === 'edit'){
-                data.id = this.id
+                data.id = id;
+                data.parentId =parentId
+            }else{
+                data.parentId = id;
             }
             data.roleId = data.roleId.join(',')
             menuAddOrEdit(data,pageType).then(res=>{
@@ -121,41 +118,50 @@ export default {
                         message: `菜单${pageType === 'add' ? '创建' : '修改'}成功`,
                         type: 'success'    
                     })
-                    this.$emit('close',false)
+                    this.$store.dispatch('user/getMenuList', {payload:this.$store.state.user.userInfo.id})
+                    this.$emit('close',false,true)
                 }
             })
         },
         getDetail(){
-                console.log(22)
-            
             const parmas={}
-            if(this.title === '修改子菜单'){
-                parmas.id=this.id
-            }else{
-                parmas.title = this.id
-            }
+            // if(this.title === '修改子菜单'){
+            //     parmas.id=this.id
+            // }else{
+            //     parmas.title = this.id
+            // }
+            parmas.id=this.id
 
             selectAdminMenuById(parmas,this.title).then(res=>{
                 if(res.statusCode === 0){
                     const {content} = res
-                    const list = this.dataList;
-                    const arr = [];
-                    list.forEach(item=>{
-                        item.value=content[item.id]
-                        const obj = {...item}
-                        obj.value=content[item.id]
-                        if(item.id === 'roleId'){
-                            obj.value=dataType(content[item.id]) === 'String' ? content[item.id].split(',').map(Number) : []
-                        }
+                    
+                    this.menuInfo = content
 
-                        arr.push(obj)
-                    })
-                    this.dataList = arr
+                    if(this.pageType === 'edit'){
+                        const list = this.dataList;
+                        const arr = [];
+                        list.forEach(item=>{
+
+                            item.value=content[item.id]
+                            const obj = {...item}
+                            obj.value=content[item.id]
+                            if(item.id === 'roleId'){
+                                obj.value=dataType(content[item.id]) === 'String' ? content[item.id].split(',').map(Number) : []
+                            }
+
+                            arr.push(obj)
+                        })
+                        this.dataList = arr
+                    }
                    
                 }
             })
         },
         handleClose(){
+            this.dataList.forEach(item=>{
+                item.value =''
+            })
             this.$emit('close',false)
         }
         
