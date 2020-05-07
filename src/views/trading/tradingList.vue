@@ -209,6 +209,10 @@ export default {
         cancelTrade({tradeId:id}).then(res=>{
           if(res.statusCode === 0){
             this.getArticleByLocaleList()
+            this.$message({
+              message:"撤销成功",
+              type:'success'
+            })
           }
         })
       },

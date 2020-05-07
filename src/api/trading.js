@@ -82,3 +82,12 @@ export function tradeDeal(data) {
       data
     })
 }
+
+// 获取交易日志和返佣详情列表(交易手续费)
+export function tradeRewardLs(data) {
+  return request({
+    url: 'admin/trade/trade-reward-ls',
+    method: 'get',
+    data
+  })
+}

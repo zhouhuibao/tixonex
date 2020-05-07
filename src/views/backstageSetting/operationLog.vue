@@ -8,15 +8,15 @@
             <el-dropdown-item command="HIDE">删除</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+          <el-button type="primary" icon="el-icon-refresh-left" @click="refresh()">刷新</el-button>
       </div>
 
       <div class="operationRight">
         <el-button-group>
           <search-list @getValue="getChild" :dataList="typeList"></search-list>
-          <el-button type="primary" icon="el-icon-refresh-left" @click="refresh()">刷新</el-button>
+          <el-button type="primary" @click="exportDate"  :loading="exportLoading" icon="el-icon-s-promotion">导出</el-button>
         </el-button-group>
         <el-button-group>
-          <el-button type="primary" @click="exportDate"  :loading="exportLoading" icon="el-icon-s-promotion">导出</el-button>
         </el-button-group>
       </div> 
     </div>
@@ -124,9 +124,7 @@ export default {
             handler(newValue) {
               const {operationLogSearch} = this.$store.state.backstageSetting
                 operationLogSearch[1].option = newValue
-                console.log(operationLogSearch)
                 this.typeList = operationLogSearch
-                console.log(this.typeList )
     　　　　},
     　　　　deep: true
       } 
@@ -163,6 +161,10 @@ export default {
         delOperationLog({id}).then(res=>{
           if(res.statusCode === 0){
             this.getArticleByLocaleList()
+            this.$message({
+              message:"删除成功",
+              type:'success'
+            })
           }
         })
       },

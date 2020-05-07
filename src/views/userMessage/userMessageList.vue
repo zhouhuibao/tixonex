@@ -140,6 +140,10 @@ export default {
         feedbackDetlete({ids:id}).then(res=>{
           if(res.statusCode === 0){
             this.getArticleByLocaleList()
+            this.$message({
+              message:"删除成功",
+              type:'success'
+            })
           }
         })
       },

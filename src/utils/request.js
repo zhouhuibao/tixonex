@@ -58,7 +58,7 @@ service.interceptors.response.use(response => {
     const {data:{statusCode,errorMessage},config:{ exportsExcel }} = response
     
     
-    if(statusCode === 100001){  // token失效
+    if(statusCode === 100001 || statusCode === 100002){  // token失效
       store.dispatch('user/resetToken').then(() => {
         location.reload()
       })

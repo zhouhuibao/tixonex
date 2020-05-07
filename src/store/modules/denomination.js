@@ -180,6 +180,43 @@ const WTstatusArr = [
     }
 ]
 
+const searchPoundage=[
+    {
+        title:'成交开始时间',
+        type:'dateTime',
+        id:'startLastTradeTime'
+    },
+    {
+        title:'成交结束时间',
+        type:'dateTime',
+        id:'endLastTradeTime'
+    },
+    {
+        title:'交易币种',
+        type:'select',
+        id:'coinName',
+        option:nameArr
+    },
+    {
+        title:'结算币种',
+        type:'select',
+        id:'settlementCurrency',
+        option:nameArr
+    },
+    {
+        title:'买方用户名',
+        type:'text',
+        id:'buyUserName'
+    },
+    {
+        title:'卖方用户名',
+        type:'text',
+        id:'sellUserName'
+    }
+
+]
+
+
 const searchWT=[
     {
         title:'成交开始时间',
@@ -253,7 +290,8 @@ const state={
     statusArr,
     JYSCArr,
     WTstatusArr,
-    searchWT
+    searchWT,
+    searchPoundage
 }
 
 const mutations={

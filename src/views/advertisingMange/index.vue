@@ -87,7 +87,10 @@
       </el-table-column>
 
       <el-table-column label="状态">
-        <template slot-scope="scope">{{ scope.row.status === 'SHOW' ? '启用' : '禁用' }}</template>
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 'SHOW'" type="success">启用</el-tag>
+          <el-tag v-else type="info">禁用</el-tag>
+        </template>
       </el-table-column>
 
       
@@ -177,6 +180,10 @@ export default {
         delAdvertiseBatch({ids:id}).then(res=>{
           if(res.statusCode === 0){
             this.getArticleByLocaleList()
+            this.$message({
+              message:"删除成功",
+              type:'success'
+            })
           }
         })
       },

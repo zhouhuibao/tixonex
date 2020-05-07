@@ -2,12 +2,12 @@
   <div>
     <div class="operation clearfix">
       <div class="operationLeft">
+          <el-button type="primary" icon="el-icon-refresh-left" @click="refresh()">刷新</el-button>
         
       </div>
 
       <div class="operationRight">
         <el-button-group>
-          <el-button type="primary" icon="el-icon-refresh-left" @click="refresh()">刷新</el-button>
         </el-button-group>
       </div>
     </div>
