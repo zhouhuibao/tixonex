@@ -38,7 +38,7 @@ export default {
                 title:'前台显示时间',
                 type:'dateTime',
                 id:'displayTime',
-                format:'yyyy-mm-dd hh:mm:ss',
+                format:'yyyy-MM-dd HH:mm:ss',
             },
             {
                 title:'类型',

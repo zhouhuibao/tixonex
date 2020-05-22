@@ -106,7 +106,8 @@ export default {
           pageNo:1,
           pageSize:10,
           total:0,
-          exportLoading:false
+          exportLoading:false,
+          searchObj:{}
           // typeList:this.$store.article.typeList
         }
     },
@@ -138,6 +139,7 @@ export default {
       },
       getChild(data){
         this.pageNo = 1;
+        this.searchObj = data
         this.getArticleByLocaleList(data)
       },
       refresh(){
@@ -160,7 +162,7 @@ export default {
       },
       handleCurrentChange(val) {
         this.pageNo = val
-        this.getArticleByLocaleList()
+        this.getArticleByLocaleList(this.searchObj)
       },
       getArticleByLocaleList(data){
         this.loading = true

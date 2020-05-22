@@ -30,8 +30,8 @@ export function transferList(data) {
 // 一次审核失败/通过
 export function oneTransferCheck(data,type) {
     return request({
-      url: `admin/finance/${type === 'fail' ? 'transfer-check-fail' : 'transfer-check-pass'} `,
-      method: 'get',
+      url: `admin/finance/${type === 'fail' ? 'transfer-check-fail' : 'transfer-check-pass'}`,
+      method: 'post',
       data
     })
 }
@@ -39,8 +39,8 @@ export function oneTransferCheck(data,type) {
 // 二次审核失败/通过
 export function twoTransferCheck(data,type) {
     return request({
-      url: `admin/finance/${type === 'fail' ? 'transfer-sencond-check-fail' : 'transfer-sencond-check-pass'} `,
-      method: 'get',
+      url: `admin/finance/${type === 'fail' ? 'transfer-sencond-check-fail' : 'transfer-sencond-check-pass'}`,
+      method: 'post',
       data
     })
 }

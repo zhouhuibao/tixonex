@@ -13,7 +13,7 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 // For example, Mac: sudo npm run
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
-const port = process.env.port || process.env.npm_config_port || 9528 // dev port
+const port = process.env.port || process.env.npm_config_port || 1023 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -36,7 +36,10 @@ module.exports = {
     //   warnings: false,
     //   errors: true
     // },
-    "proxy": "http://192.168.0.107:8089/"
+
+    // "proxy": "http://47.98.193.148/"  //测试服务器
+    "proxy": "http://192.168.0.109:8089" // 刘辉本地
+    
     // proxy: {  // 代理请求
     //   '/admin': {
     //       target: 'http://192.168.0.107:8089/',

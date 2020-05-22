@@ -21,25 +21,50 @@ const typeArr=[
 const statusArr=[
     {
         key:'所有',
-        value:'ALL'
+        value:'ALL',
+        valueNumber:10
     },
     {
         key:'正在申请',
-        value:'APPLYING'
+        value:'APPLYING',
+        valueNumber:0
     },
     {
         key:'审核通过',
-        value:'PASSED'
+        value:'PASSED',
+        valueNumber:1
     },
     {
         key:'审核失败',
-        value:'FAILED'
+        value:'FAILED',
+        valueNumber:2
     },
     {
         key:'节点确认',
-        value:'CONFIRM'
+        value:'CONFIRM',
+        valueNumber:3
     }
 ]
+
+
+const rollStatus=[
+    {
+        key:'待审核',
+        value:0,
+        valueString:'APPLYING'
+    },
+    {
+        key:'审核成功',
+        value:1,
+        valueString:'PASSED'
+    },
+    {
+        key:'审核失败',
+        value:2,
+        valueString:'FAILED'
+    }
+]
+
 
 const transferHistory=[
     {
@@ -122,6 +147,8 @@ const rollOutAuditSearch=[
 
 const state={
     typeArr,
+    statusArr,
+    rollStatus,
     transferHistory,
     rollOutAuditSearch
 }

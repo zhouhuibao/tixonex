@@ -4,6 +4,7 @@ import { getToken, setToken, removeToken,
   setUserInfo,
   toTree,
   removeUserInfo,
+  getUserInfo,
   dataType } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import route from '@/router'
@@ -65,16 +66,15 @@ const mutations = {
 const actions = {
   // user login
   login({ commit,state,dispatch }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password,num } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ username: username.trim(), password: password,num }).then(response => {
 
         const { statusCode,content:{token,userId} } = response
 
         if(statusCode === 0 ){
           commit('SET_TOKEN', token)
           dispatch('getInfoById',{payload:userId})
-          dispatch('getMenuList',{payload:userId})
           
           setToken(token)
           Message({
@@ -117,7 +117,7 @@ const actions = {
   },
   getMenuList({ commit,state },payload) {
     return new Promise((resolve, reject) => {
-      userPermissionMenuList({userId:payload.payload}).then(response => {
+      userPermissionMenuList({userId:getUserInfo().id}).then(response => {
         const { statusCode,content } = response
         if (statusCode === 0) {
           const list = toTree(content)

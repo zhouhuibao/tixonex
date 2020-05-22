@@ -21,6 +21,21 @@ const typeArr=[
         value:100
     }
 ]
+const JYTagArr=[
+    {
+        key:'未标识',
+        value:0
+    },
+    {
+        key:'用户确认',
+        value:1
+    },
+    {
+        key:'后台确认',
+        value:2
+    }
+]
+
 
 const statusArr=[
     {
@@ -176,8 +191,6 @@ const otcOrderJYSearch=[
 ]
 
 
-
-
 const otcOrderListSearch=[
     {
         title:'币种名称',
@@ -198,14 +211,14 @@ const otcOrderListSearch=[
     {
         title:'状态',
         type:'select',
-        option:typeArr,
-        id:'type'
+        option:statusArr,
+        id:'status'
     },
     {
         title:'挂单类型',
         type:'select',
-        option:statusArr,
-        id:'status'
+        option:typeArr,
+        id:'type'
     },
     {
         title:'开始时间',
@@ -268,7 +281,8 @@ const state={
     otcOrderJYSearch,
     SHstatus,
     isYX,
-    OTCauthSeatch
+    OTCauthSeatch,
+    JYTagArr,
 }
 
 const mutations={

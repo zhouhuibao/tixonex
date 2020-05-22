@@ -125,7 +125,7 @@
 
 <script>
 
-import {getadvertiseList,disableArticles,delAdvertiseBatch} from '@/api/advertiseManage'
+import {getadvertiseList,onlineOrOffline,delAdvertiseBatch} from '@/api/advertiseManage'
 import SearchList from '@/components/SearchList'
 import { isEmpty, dataType } from '@/utils/auth'
 
@@ -188,10 +188,13 @@ export default {
         })
       },
       disabledData(data,status){
-        disableArticles({articleIds:data},status).then(res=>{
-          console.log(res)
+        onlineOrOffline({adId:data,status:status === 'SHOW' ? 'HIDE' : 'SHOW'}).then(res=>{
           if(res.statusCode === 0){
             this.getArticleByLocaleList()
+            this.$message({
+              type:'success',
+              message:'操作成功'
+            })
           }
         })
       },

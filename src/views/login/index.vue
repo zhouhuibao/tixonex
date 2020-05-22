@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="请输入账号"
           name="username"
           type="text"
           tabindex="1"
@@ -30,7 +30,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -39,6 +39,23 @@
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
+      </el-form-item>
+
+      <el-form-item prop="num" class="yzm">
+        <span class="el-icon-chat-dot-square" style="color:#889aa4;padding-left:15px"></span>
+        <!-- <span class="svg-container">
+          <svg-icon icon-class="el-icon-chat-dot-square" />
+        </span> -->
+        <el-input
+          ref="num"
+          v-model="loginForm.num"
+          placeholder="请输入验证码"
+          name="num"
+          type="text"
+          tabindex="1"
+          auto-complete="on"
+        />
+          <el-button style="width:120px;padding:0;text-align:center;line-height:40px" :loading="yzmLoading" :disabled="yzmBtnDisabled" @click="getYzCode">{{ yzmTime }}</el-button>
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
@@ -50,7 +67,8 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, verifyCode } from '@/api/user'
+import { isEmpty } from '../../utils/auth'
 
 export default {
   name: 'Login',
@@ -70,14 +88,41 @@ export default {
         callback()
       }
     }
+
+    const validcodeName=(rule,value,callback)=>{
+      let mobileReg=/^1[3-9]\d{9}$/
+      let EmailReg=/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i
+      if(value.indexOf('@') === -1){   
+          if(!mobileReg.test(value)){
+              callback(new Error('用户名格式不正确,请用手机号或者是邮箱来作为用户名'))
+          }else{
+              callback()
+          }
+      }else{
+          if(!EmailReg.test(value)){
+              callback(new Error('用户名格式不正确,请用手机号或者是邮箱来作为用户名'))
+          }else{
+              callback()
+          }
+      }
+    };
+
     return {
+      yzmTime:'获取验证码',
+      yzmBtnDisabled:false,
+      yzmLoading:false,
       loginForm: {
         username: '',
-        password: ''
+        password: '',
+        num:''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', }],
-        password: [{ required: true, trigger: 'blur', }]
+        username: [
+          {required:true,message:'账号不能为空',trigger:'blur'},
+          {validator:validcodeName,trigger:'blur'}
+        ],
+        password: [{ required: true, trigger: 'blur',message:'密码不能为空' }],
+        num: [{ required: true, trigger: 'blur',message:'验证码不能为空' }],
       },
       loading: false,
       passwordType: 'password',
@@ -92,7 +137,49 @@ export default {
       immediate: true
     }
   },
+  mounted(){
+      // this.yzmBtnDisabled = false
+
+  },
   methods: {
+    getYzCode(){
+      this.$refs.loginForm.validateField('username',errmsg => {
+        if (errmsg) {
+          this.$message({
+            message:'账号不合法,请检查',
+            type:'error'
+          })
+        } else {
+          this.yzmLoading =true
+          verifyCode({username:this.loginForm.username}).then(res=>{
+            this.yzmLoading =false
+            if(res.statusCode === 0){
+              this.yzmBtnDisabled = true
+              let time = 59;
+              this.yzmTime = 60+"  秒后重发"
+              const timer = setInterval(() => {
+                let currentNum = time--
+                this.yzmTime = `${currentNum} 秒后重发`;
+                if(time <=-1){
+                  this.yzmTime = '重新获取验证码'
+                  this.yzmBtnDisabled =false;
+                  clearTimeout(timer)
+                }
+
+              }, 1000);
+              this.$message({
+                message:'验证码发送成功,请注意查收',
+                type:'success'
+              })
+            }
+          }).catch(()=>{
+            this.yzmLoading =false
+          })
+        }
+      })
+
+     
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -181,6 +268,19 @@ $cursor: #fff;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
+  }
+
+  .yzm{
+    // width: 300px;
+    position: relative;
+    // .login-container .el-input{
+    //   width: 200px;
+    // }
+    .el-button{
+      position: absolute;
+      top: 3px;
+      right: 10px;
+    }
   }
 }
 </style>

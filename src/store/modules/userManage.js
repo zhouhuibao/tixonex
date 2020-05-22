@@ -2,11 +2,11 @@ import {nationalCode} from '@/api/user'
 const statusArr=[
     {
         key:'正常',
-        value:1
+        value:0
     },
     {
         key:'禁用',
-        value:0
+        value:1
     }
 ]
 
@@ -189,7 +189,6 @@ const changeList = [
 
 const state={
     searchData:[
-       
         {
             title:'用户真实姓名',
             type:'text',

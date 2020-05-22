@@ -3,6 +3,19 @@ import { Message } from 'element-ui'
 import { getToken,isEmpty } from '@/utils/auth'
 import Qs from 'qs'
 import store from '@/store'
+import errMessage from './errMessage'
+
+
+const getMsg=(code)=>{
+  let msgStr = ''
+  for(let i=0;i<errMessage.length;i+=1){
+    if(errMessage[i].code === code){
+      msgStr = errMessage[i].msg
+      break;
+    }
+  }
+  return msgStr
+}
 
 // 创建axios实例
 const service = axios.create({
@@ -47,7 +60,6 @@ service.interceptors.request.use(config => {
 // response 拦截器
 service.interceptors.response.use(response => {
   const code = response.status
-
   if (code < 200 || code > 300) {
   //  Notification.error({
   //   title: response.message
@@ -65,10 +77,10 @@ service.interceptors.response.use(response => {
 
       return response.data
     }
-    
+
     if(statusCode !== 0 && !exportsExcel){
       Message({
-        message: errorMessage,
+        message: isEmpty(errorMessage) ? errorMessage : getMsg(statusCode) ,
         type: 'error'
       });
     }
@@ -77,6 +89,10 @@ service.interceptors.response.use(response => {
   }
  },
  error => {
+    Message({
+      message: '服务器异常,请联系管理员',
+      type: 'error'
+    });
   return Promise.reject(error)
  }
 )

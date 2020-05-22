@@ -49,3 +49,11 @@ export function addAdvertise(data,type) {
   })
 }
 
+// 广告上线下线
+export function onlineOrOffline(data) {
+  return request({
+    url: 'admin/advertise/onlineOrOffline',
+    method: 'get',
+    data
+  })
+}

@@ -61,14 +61,14 @@ export default {
                 title:'广告开始时间',
                 type:'dateTime',
                 id:'startTime',
-                format:'yyyy-mm-dd hh:mm:ss',
+                format:'yyyy-MM-dd HH:mm:ss',
                 required:true,
             },
             {
                 title:'广告结束时间',
                 type:'dateTime',
                 id:'endTime',
-                format:'yyyy-mm-dd hh:mm:ss',
+                format:'yyyy-MM-dd HH:mm:ss',
                 required:true,
             },
             {
@@ -114,7 +114,6 @@ export default {
     methods:{
         getChild(data){
             const {pageType} = this;
-            console.log(data)
 
             if(pageType === 'edit'){
                 data.id = this.id

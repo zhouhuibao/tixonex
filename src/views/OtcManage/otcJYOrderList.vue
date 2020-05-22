@@ -127,6 +127,7 @@
         label="订单完成标识"
         show-overflow-tooltip
         >
+        <template slot-scope="scope">{{ getJYStatus(scope.row.tag) }}</template>
       </el-table-column>
 
       <el-table-column
@@ -184,14 +185,12 @@ export default {
           pageSize:10,
           total:0,
           detailVisible:false,
-          selectedId:''
+          selectedId:'',
+          searchObj:{}
         }
     },
     created(){
       this.getArticleByLocaleList()
-    },
-    mounted(){
-
     },
     methods:{
       getDetail(id){
@@ -201,6 +200,16 @@ export default {
       changeDrawer(visible){
         this.detailVisible = false
       },
+      getJYStatus(value){
+        const {JYTagArr} = this.$store.state.OTCManage;
+        let str = ''
+        JYTagArr.forEach(item=>{
+          if(item.value === value){
+            str = item.key
+          }
+        })
+        return str
+      },
       getStatus(value){
         const {OTCorderStatus} = this.$store.state.OTCManage;
         let str = ''
@@ -209,11 +218,11 @@ export default {
             str = item.key
           }
         })
-       
         return str
       },
       getChild(data){
         this.pageNo = 1;
+        this.searchObj = data
         this.getArticleByLocaleList(data)
       },
       refresh(){
@@ -229,7 +238,7 @@ export default {
       },
       handleCurrentChange(val) {
         this.pageNo = val
-        this.getArticleByLocaleList()
+        this.getArticleByLocaleList(this.searchObj)
       },
       getArticleByLocaleList(data){
         this.loading = true

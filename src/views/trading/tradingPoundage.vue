@@ -121,6 +121,7 @@ export default {
           pageNo:1,
           pageSize:10,
           total:0,
+          searchObj:{}
         }
     },
     created(){
@@ -132,6 +133,7 @@ export default {
     methods:{
       getChild(data){
         this.pageNo = 1;
+        this.searchObj = data
         this.getArticleByLocaleList(data)
       },
       refresh(){
@@ -141,7 +143,7 @@ export default {
       
       handleCurrentChange(val) {
         this.pageNo = val
-        this.getArticleByLocaleList()
+        this.getArticleByLocaleList(this.searchObj)
       },
       getArticleByLocaleList(data){
         this.loading = true

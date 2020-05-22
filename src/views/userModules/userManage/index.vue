@@ -5,8 +5,8 @@
         <el-dropdown split-button type="primary" @command="handleCommand">
         操作
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item :command="1">启用</el-dropdown-item>
-            <el-dropdown-item :command="0">禁用</el-dropdown-item>
+            <el-dropdown-item :command="0">启用</el-dropdown-item>
+            <el-dropdown-item :command="1">禁用</el-dropdown-item>
             <el-dropdown-item command="yes">实名认证审核通过</el-dropdown-item>
             <el-dropdown-item command="no">实名认证审核不通过</el-dropdown-item>
             <el-dropdown-item command="group">分组</el-dropdown-item>
@@ -111,11 +111,10 @@
       </el-table-column>
 
       <el-table-column
-        prop="realNameStatus"
         label="身份认证状态"
         show-overflow-tooltip
         >
-        <template slot-scope="scope">{{ setRealNameStatus(scope.row.realNameStatus) }}</template>
+        <template slot-scope="scope">{{ setRealNameStatus(scope.row.idCardStatus) }}</template>
       </el-table-column>
 
       <el-table-column
@@ -132,7 +131,8 @@
         >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 0" type="success">正常</el-tag>
-          <el-tag v-else type="info">禁用</el-tag>
+          <el-tag v-else-if="scope.row.status === 1" type="info">禁用</el-tag>
+          <el-tag v-else type="info">失败</el-tag>
           
         </template>
       </el-table-column>
@@ -147,7 +147,8 @@
       <template slot-scope="scope">
         <el-button @click="editData(scope.row.id)" type="text" size="small">修改</el-button>
         <el-button slot="reference" @click="detailedVisible = true" type="text" size="small">明细</el-button>
-        <el-button @click="disabledData(scope.row.id,scope.row.status)" type="text" size="small">{{scope.row.status !== 0 ? '启用' : '禁用'  }} </el-button>
+        <el-button  v-if="scope.row.status === 0" @click="disabledData(scope.row.id,scope.row.status)" type="text" size="small">禁用</el-button>
+        <el-button  v-else-if="scope.row.status === 1" @click="disabledData(scope.row.id,scope.row.status)" type="text" size="small">启用</el-button>
         <el-popconfirm
           title="确定重置支付密码吗"
           @onConfirm="resetPassword(scope.row.id,'pay')"
@@ -233,6 +234,7 @@ export default {
       tableData: [],
       detailedTableData: [],
       multipleSelection: [],
+      searchObj:{},
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -248,7 +250,7 @@ export default {
     this.getArticleByLocaleList()
   },
   mounted() {
-
+    console.log(this.$store.state.userManage.searchData)
   },
   methods: {
     setRealNameStatus(type) {
@@ -276,7 +278,9 @@ export default {
     },
 
     getChild(data) {
-      this.pageNo = 1
+      console.log(data)
+      this.pageNo = 1;
+      this.searchObj = data
       this.getArticleByLocaleList(data)
     },
     refresh() {
@@ -316,7 +320,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.pageNo = val
-      this.getArticleByLocaleList()
+      this.getArticleByLocaleList(this.searchObj)
     },
     getArticleByLocaleList(data) {
       this.loading = true
@@ -353,10 +357,10 @@ export default {
 
       switch (command) {
         case 0:
-          titleStr = '禁用'
+          titleStr = '启用'
         break;
         case 1:
-          titleStr = '启用'
+          titleStr = '禁用'
         break;
         case 'yes':
           titleStr = '审核通过'
@@ -419,8 +423,6 @@ export default {
             if(command === 'group'){
               this.groupVisible = true
             }
-
-            
 
             
           })

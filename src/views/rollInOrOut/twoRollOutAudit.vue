@@ -28,7 +28,7 @@
       <el-table-column
         prop="amount"
         label="数量"
-        show-overflow-tooltip
+        width="70"
         >
       </el-table-column>
       <el-table-column
@@ -60,49 +60,59 @@
       </el-table-column>
 
       <el-table-column
-        prop="targetAddress"
+        prop="address"
         label="目标地址"
         show-overflow-tooltip
         >
       </el-table-column>
 
       <el-table-column
-        prop="transferTime"
+        prop="sendTime"
         label="转账时间"
-        show-overflow-tooltip
+        align="center"
+        width="160"
         >
       </el-table-column>
 
       <el-table-column
-        prop="sendTime"
+        prop="lastTime"
+        align="center"
         label="操作时间"
-        show-overflow-tooltip
+        width="160"
         >
+        
       </el-table-column>
 
       <el-table-column
         prop="secondStatus"
         label="交易状态"
-        show-overflow-tooltip
+        align="center"
+        width="80"
         >
+        <template slot-scope="{row}">
+          {{setStatusName(row.status)}}
+        </template>
       </el-table-column>
 
       <el-table-column
         label="操作"
-        show-overflow-tooltip
+        align="center"
+        width="150"
         >
-        <el-popconfirm
-          title="确定审核通过吗"
-          @onConfirm="deleteData(scope.row.id)"
-        >
-          <el-button slot="reference"  type="text" size="small">审核通过</el-button>
-        </el-popconfirm>
-        <el-popconfirm
-          title="确定审核不通过吗"
-          @onConfirm="deleteData(scope.row.id,'fail')"
-        >
-          <el-button slot="reference"  type="text" size="small">审核不通过</el-button>
-        </el-popconfirm>
+        <template slot-scope="scope">
+          <el-popconfirm
+            title="确定审核通过吗"
+            @onConfirm="deleteData(scope.row.id)"
+          >
+            <el-button slot="reference"  type="text" size="small">审核通过</el-button>
+          </el-popconfirm>
+          <el-popconfirm
+            title="确定审核不通过吗"
+            @onConfirm="deleteData(scope.row.id,'fail')"
+          >
+            <el-button slot="reference"  type="text" size="small">审核不通过</el-button>
+          </el-popconfirm>
+        </template>
       </el-table-column>
 
     </el-table>
@@ -134,6 +144,7 @@ export default {
           pageNo:1,
           pageSize:10,
           total:0,
+          searchObj:{}
         }
     },
     created(){
@@ -143,8 +154,22 @@ export default {
 
     },
     methods:{
+      setStatusName(type) {
+        const {
+          rollStatus
+        } =  this.$store.state.rollInOrOut
+        console.log(rollStatus)
+        let str = ''
+        rollStatus.forEach(item => {
+          if (item.valueString === type) {
+            str = item.key
+          }
+        })
+        return str
+      },
       getChild(data){
         this.pageNo = 1;
+        this.searchObj = data
         this.getArticleByLocaleList(data)
       },
       refresh(){
@@ -160,7 +185,7 @@ export default {
       },
       handleCurrentChange(val) {
         this.pageNo = val
-        this.getArticleByLocaleList()
+        this.getArticleByLocaleList(this.searchObj)
       },
       getArticleByLocaleList(data){
         this.loading = true

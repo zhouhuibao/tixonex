@@ -108,6 +108,7 @@ export default {
           pageSize:10,
           total:0,
           exportLoading:false,
+          searchObj:{},
           typeList:operationLogSearch
         }
     },
@@ -150,6 +151,7 @@ export default {
       
       getChild(data){
         this.pageNo = 1;
+        this.searchObj = data
         this.getArticleByLocaleList(data)
       },
       refresh(){
@@ -171,7 +173,7 @@ export default {
       
       handleCurrentChange(val) {
         this.pageNo = val
-        this.getArticleByLocaleList()
+        this.getArticleByLocaleList(this.searchObj)
       },
       getArticleByLocaleList(data){
         this.loading = true
@@ -191,10 +193,10 @@ export default {
             pageSize,
             ...data,
             id:!isEmpty(data.id) ? 0 : data.id,
-            userName:!isEmpty(data.userName) ? 0 : data.userName,
-            method:!isEmpty(data.method) ? 0 : data.method,
-            path:!isEmpty(data.path) ? 0 : data.path,
-            ip:!isEmpty(data.ip) ? 0 : data.ip,
+            userName:!isEmpty(data.userName) ? '' : data.userName,
+            method:!isEmpty(data.method) ? '' : data.method,
+            path:!isEmpty(data.path) ? '' : data.path,
+            ip:!isEmpty(data.ip) ? '' : data.ip,
           }
         } 
         getOperationLog(parmas).then(res=>{

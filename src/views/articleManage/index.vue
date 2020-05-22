@@ -113,7 +113,8 @@ export default {
           pageNo:1,
           pageSize:10,
           total:0,
-          typeList:searchData
+          typeList:searchData,
+          searchObj:{}
         }
     },
     mounted(){
@@ -142,8 +143,8 @@ export default {
       },
       getChild(data){
         this.pageNo = 1;
+        this.searchObj = data
         this.getArticleByLocaleList(data)
-        console.log(data)
       },
       refresh(){
         this.pageNo = 1;
@@ -172,7 +173,7 @@ export default {
       },
       handleCurrentChange(val) {
         this.pageNo = val
-        this.getArticleByLocaleList()
+        this.getArticleByLocaleList(this.searchObj)
       },
       getArticleByLocaleList(data){
         this.loading = true

@@ -20,6 +20,24 @@ export default {
     name:'backstageUserOperation',
     data() {
         const {authList,roleList} = this.$store.state.backstageSetting
+        let validcodeName=(rule,value,callback)=>{
+            let mobileReg=/^1[3-9]\d{9}$/
+            let EmailReg=/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i
+            if(value.indexOf('@') === -1){   
+                if(!mobileReg.test(value)){
+                    callback(new Error('用户名格式不正确,请用手机号或者是邮箱来作为用户名'))
+                }else{
+                    callback()
+                }
+            }else{
+                if(!EmailReg.test(value)){
+                    callback(new Error('用户名格式不正确,请用手机号或者是邮箱来作为用户名'))
+                }else{
+                    callback()
+                }
+            }
+        };
+
         return {
             dataList:[
             {
@@ -27,6 +45,10 @@ export default {
                 type:'text',
                 id:'username',
                 required:true,
+                rules:[
+                    {required:true,message:'请输入用户名',trigger:'blur'},
+                    {validator:validcodeName,trigger:'blur'}
+                ]
             },
             {
                 title:'名称',

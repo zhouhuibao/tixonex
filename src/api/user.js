@@ -10,6 +10,15 @@ export function login(data) {
   })
 }
 
+// 获取验证码
+export function verifyCode(data) {
+  return request({
+    url: 'admin/user/verify-code',
+    method: 'post',
+    data
+  })
+}
+
 // 判断用户的token是否有效
 export function getInfo(data) {
   return request({

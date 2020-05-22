@@ -83,7 +83,7 @@ export default {
                 title:'身份证审核状态',
                 type:'radio',
                 option:examineArr,
-                id:'status',
+                id:'idCardStatus',
                 value:1,
                 required:true
             },
@@ -123,9 +123,9 @@ export default {
             const {pageType} = this;
             const parmas={
                 userId:this.id,
-                status:data.status,
+                status:data.idCardStatus,
             }
-
+            
             updateUser(parmas).then(res=>{
                 if(res.statusCode === 0){
                     this.$message({
@@ -144,7 +144,6 @@ export default {
                     
                     const list = this.dataList;
                     const arr = [];
-                    console.log(content)
                     list.forEach(item=>{
                         item.value=content[item.id]
                         const obj = {...item}

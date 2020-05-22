@@ -3,7 +3,6 @@
         <el-form :model="dynamicValidateForm" 
             ref="dynamicValidateForm" 
             label-width="auto"
-
             class="demo-dynamic"
             :style="`width:${width === undefined ? 'auto' : width };`"
         >

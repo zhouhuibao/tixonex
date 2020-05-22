@@ -29,11 +29,13 @@ const store = new Vuex.Store({
     rollInOrOut,
     OTCManage,
     backstageSetting
+    
   },
   getters,
   plugins: [createPersistedState({
-    storage:window.Cookies,
-  })]
+    getState (states){}
+  }
+  )]
 })
 
 export default store
