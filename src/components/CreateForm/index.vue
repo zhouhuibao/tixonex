@@ -26,11 +26,12 @@
             <div class="picker-icon" v-if="item.type === 'icon'">
                 <icon-picker
                     v-model="item.value"
+                    @clear="delIcon(item)"
                 >
                 </icon-picker>
-                <div class="delICon" @click="delIcon(item)">
+                <!-- <div class="delICon" @click="delIcon(item)">
                     <i class="el-icon-circle-close"></i>
-                </div>
+                </div> -->
             </div>
              
             
@@ -143,6 +144,8 @@
 
 import {isEmpty, dataType} from '@/utils/auth'
 import Editor from '@/components/Tinymce'
+import IconPicker from '@/components/IconPicker'
+
 export default {
     data() {
       return {
@@ -187,11 +190,11 @@ export default {
         })
     },
     components: {
-        Editor
+        Editor,
+        IconPicker
     },
     methods: {
         delIcon(data){
-            console.log()
             this.dynamicValidateForm.domains.forEach(item=>{
                 if(item.id === data.id){
                     item.value=''

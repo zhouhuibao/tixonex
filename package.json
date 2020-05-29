@@ -25,7 +25,6 @@
     "qs": "^6.9.3",
     "tinymce": "^5.2.2",
     "vue": "2.6.10",
-    "vue-fontawesome-elementui-icon-picker": "^0.1.9",
     "vue-router": "3.0.6",
     "vuedraggable": "^2.23.2",
     "vuex": "3.1.0",

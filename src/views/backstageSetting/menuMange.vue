@@ -31,7 +31,7 @@
                     <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改菜单',item.id)"></el-button>
                     <el-popconfirm
                       title="确定删除该菜单吗"
-                      @onConfirm="clickDel(item.title)"
+                      @onConfirm="clickDel(item)"
                     >
                       <el-button  slot="reference" type="text" class="el-icon-delete"></el-button>
                     </el-popconfirm>
@@ -54,7 +54,7 @@
                             <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改子菜单',nodeItem.id)"></el-button>
                             <el-popconfirm
                               title="确定删除该菜单吗"
-                              @onConfirm="clickDel(nodeItem.id)"
+                              @onConfirm="clickDel(nodeItem)"
                             >
                               <el-button type="text"  slot="reference" class="el-icon-delete"></el-button>
                             </el-popconfirm>
@@ -234,20 +234,8 @@ export default {
         }
         this.visible=true
       },
-      clickDel(id){
-        if(dataType(id) === 'String'){
-          selectAdminMenuById({title:id}).then(res=>{
-            if(res.statusCode === 0){
-                const {content} = res
-                this.delateMenu(content.id)
-            }
-          })
-        }else{
-          this.delateMenu(id)
-        }
-      },
-      delateMenu(id){
-        delMenu({id}).then(res=>{
+      clickDel(item){
+        delMenu({id:item.id}).then(res=>{
           if(res.statusCode === 0){
             this.getMenuList()
             this.$message({

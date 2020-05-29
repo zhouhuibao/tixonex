@@ -31,7 +31,7 @@ const getComponent=(path)=>{
       item.children.forEach(childrenItem=>{
         if(path === childrenItem.path){
           component = childrenItem.component
-        }
+        } 
       })
     }
   })
@@ -145,6 +145,7 @@ const actions = {
             }
           
           })      
+          console.log(list)
           commit('setMenuList', list)
           
         }
