@@ -46,88 +46,43 @@
       </el-table-column>
       <el-table-column
         prop="email"
-        width="150"
         label="用户邮箱"
-        show-overflow-tooltip
         >
       </el-table-column>
       <el-table-column
         prop="userName"
-        width="110"
         label="用户名"
-        show-overflow-tooltip
         >
       </el-table-column>
 
-      <el-table-column
-        prop="userType"
-        label="用户类型"
-        show-overflow-tooltip
-        >
-      </el-table-column>
+      
 
       <el-table-column
         prop="mobile"
-        width="110"
         label="手机号"
-        show-overflow-tooltip
         >
       </el-table-column>
 
-      <el-table-column
-        prop="inviteCode"
-        label="分享码"
-        show-overflow-tooltip
-        >
-      </el-table-column>
+     
 
       <el-table-column
         prop="realName"
         label="真实姓名"
-        show-overflow-tooltip
         >
       </el-table-column>
 
-      <el-table-column
-        prop="groupName"
-        label="分组"
-        show-overflow-tooltip
-      >
-      </el-table-column>
+     
 
-      <el-table-column
-        prop="idCardTime"
-        label="上传认证时间"
-        width="170"
-        show-overflow-tooltip
-        >
-      </el-table-column>
-
-      <el-table-column
-        prop="referrerMobile"
-        label="推荐人手机号"
-        show-overflow-tooltip
-        >
-      </el-table-column>
-
+     
       <el-table-column
         label="身份认证状态"
-        show-overflow-tooltip
         >
         <template slot-scope="scope">{{ setRealNameStatus(scope.row.idCardStatus) }}</template>
       </el-table-column>
 
-      <el-table-column
-        prop="registerTime"
-        width="170"
-        label="注册时间"
-        show-overflow-tooltip
-        >
-      </el-table-column>
 
       <el-table-column
         label="状态"
-        show-overflow-tooltip
         >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 0" type="success">正常</el-tag>
@@ -142,11 +97,9 @@
         align='center'
         fixed="right"
         label="操作"
-        width="300"
       >
       <template slot-scope="scope">
         <el-button @click="editData(scope.row.id)" type="text" size="small">修改</el-button>
-        <el-button slot="reference" @click="detailedVisible = true" type="text" size="small">明细</el-button>
         <el-button  v-if="scope.row.status === 0" @click="disabledData(scope.row.id,scope.row.status)" type="text" size="small">禁用</el-button>
         <el-button  v-else-if="scope.row.status === 1" @click="disabledData(scope.row.id,scope.row.status)" type="text" size="small">启用</el-button>
         <el-popconfirm

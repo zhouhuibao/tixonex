@@ -62,6 +62,36 @@ export default {
                 disabled:true,
             },
             {
+                title:'银行账户',
+                type:'text',
+                id:'bankCard',
+                disabled:true,
+            },
+            {
+                title:'微信账号',
+                type:'text',
+                id:'alipay',
+                disabled:true,
+            },
+            {
+                title:'支付宝账号',
+                type:'text',
+                id:'weChat',
+                disabled:true,
+            },
+            {
+                title:'上传认证时间',
+                type:'text',
+                id:'idCardTime',
+                disabled:true,
+            },
+            {
+                title:'注册时间',
+                type:'text',
+                id:'registerTime',
+                disabled:true,
+            },
+            {
                 title:'身份证正面',
                 type:'upload',
                 id:'idCardImg1',

@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="请输入账号"
+          placeholder="请输入账号."
           name="username"
           type="text"
           tabindex="1"
@@ -194,20 +194,6 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-
-          // login(this.loginForm).then(res=>{
-          //   console.log(res)
-          //   if(res.statusCode === 0 ){
-          //     this.$router.push({ path: this.redirect || '/' })
-          //   }else{
-          //     this.$message({
-          //       message: res.errorMessage,
-          //       type: 'error'
-          //     });
-          //   }
-          //   this.loading = false
-          // })
-          //   this.loading = false
 
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             this.$router.push({ path: this.redirect || '/' })

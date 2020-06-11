@@ -152,7 +152,7 @@ export function userSettingDetails(data) {
 // 根据用户ID查询用户对应菜单列表--用户权限菜单
 export function userPermissionMenuList(data) {
   return request({
-    url: `admin/user/userPermissionMenuList`,
+    url: `admin/user/userPermissionMenuLists`,
     method: 'post',
     data,
   })

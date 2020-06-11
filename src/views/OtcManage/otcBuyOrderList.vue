@@ -19,88 +19,59 @@
       tooltip-effect="dark"
       style="width: 100%"
     >
-      <el-table-column
-        prop="id"
-        label="ID"
-        width="70"
-        >
-      </el-table-column>
+      
       <el-table-column
         prop="orderNo"
         label="订单号"
-        width="200"
         align="center"
-        show-overflow-tooltip
         >
       </el-table-column>
       <el-table-column
         prop="coinName"
-        label="币种名称"
-        show-overflow-tooltip
+        label="币种"
         >
+        <template slot-scope="scope">{{`${scope.row.coinName}/${scope.row.legalName}` }} </template>
       </el-table-column>
-
       <el-table-column
-        prop="legalName"
-        label="法币名称"
-        show-overflow-tooltip
+        prop="name"
+        label="姓名"
         >
       </el-table-column>
 
       <el-table-column
         prop="createUser"
         label="用户"
-        show-overflow-tooltip
         >
       </el-table-column>
 
       <el-table-column
         prop="amount"
         label="总数量"
-        show-overflow-tooltip
         >
       </el-table-column>
 
       <el-table-column
         prop="ramount"
         label="剩余数量"
-        show-overflow-tooltip
         >
       </el-table-column>
 
-      <el-table-column
-        prop="mamount"
-        label="匹配数量"
-        show-overflow-tooltip
-      >
-      </el-table-column>
 
       <el-table-column
         prop="samount"
         label="交易成功数量"
-        show-overflow-tooltip
       >
       </el-table-column>
 
       <el-table-column
         prop="price"
         label="价格"
-        show-overflow-tooltip
         >
-      </el-table-column>
-
-      <el-table-column
-        prop="type"
-        label="挂单类型"
-        show-overflow-tooltip
-        >
-        <template slot-scope="scope">{{getType(scope.row.type) }} </template>
       </el-table-column>
 
       <el-table-column
         prop="status"
         label="状态"
-        show-overflow-tooltip
         >
         <template slot-scope="scope">{{getStaus(scope.row.status) }} </template>
       </el-table-column>
@@ -108,15 +79,12 @@
       <el-table-column
         prop="createTime"
         label="挂单时间"
-        width="160"
-        show-overflow-tooltip
         >
       </el-table-column>
 
       <el-table-column
         label="操作"
-        width="60"
-        show-overflow-tooltip
+        align="center"
         >
         <template slot-scope="scope">
           <el-popconfirm
@@ -217,7 +185,7 @@ export default {
           pageNo,
           pageSize,
           type:100,
-          status:10
+          status:1
         }
         if(dataType(data) === 'Object'){
           parmas={
@@ -225,7 +193,7 @@ export default {
             pageNo,
             pageSize,
             type:!isEmpty(data.type) ? 100 : data.type,
-            status:!isEmpty(data.status) ? 10 : data.status
+            status:1
           }
         }
         otcApplications(parmas).then(res=>{

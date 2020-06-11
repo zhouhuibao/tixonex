@@ -37,9 +37,8 @@ module.exports = {
     //   warnings: false,
     //   errors: true
     // },
-
-    // "proxy": "http://47.98.193.148/"  //测试服务器
-    "proxy": "http://192.168.0.109:8089" // 刘辉本地
+    
+    proxy:defaultSettings.ip
     
     // proxy: {  // 代理请求
     //   '/admin': {

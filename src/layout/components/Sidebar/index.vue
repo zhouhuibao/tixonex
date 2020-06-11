@@ -13,7 +13,6 @@
         mode="vertical"
       >
         <sidebar-item v-for="route in menuList" :key="route.path" :item="route" :base-path="route.path" />
-        <!-- <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" /> -->
       </el-menu>
     </el-scrollbar>
   </div>
@@ -69,6 +68,8 @@ export default {
     }
   },
   mounted(){
+          console.log(this.$router.options.routes)
+
     this.$store.dispatch('user/getMenuList', {payload:this.$store.state.user.userInfo.id})
   },
   methods:{

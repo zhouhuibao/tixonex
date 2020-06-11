@@ -8,7 +8,6 @@ import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
 import '@/styles/index.scss' // global css
 import 'font-awesome/css/font-awesome.min.css'  // 引入图标
-
 import App from './App'
 import store from './store'
 import router from './router'
@@ -46,6 +45,8 @@ Object.keys(filters).forEach(key => {
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+
+
 
 var vue  = new Vue({
   el: '#app',

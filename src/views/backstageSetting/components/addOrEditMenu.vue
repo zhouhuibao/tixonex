@@ -84,6 +84,12 @@ export default {
                     required:true,
                 },
                 {
+                    title:'排序',
+                    type:'number',
+                    id:'order',
+                    required:true,
+                },
+                {
                     title:'角色',
                     type:'select',
                     id:'roleId',

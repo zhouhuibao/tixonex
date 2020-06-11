@@ -209,12 +209,6 @@ const otcOrderListSearch=[
         id:'userName'
     },
     {
-        title:'状态',
-        type:'select',
-        option:statusArr,
-        id:'status'
-    },
-    {
         title:'挂单类型',
         type:'select',
         option:typeArr,

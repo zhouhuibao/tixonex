@@ -68,7 +68,7 @@ const actions = {
   login({ commit,state,dispatch }, userInfo) {
     const { username, password,num } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password,num }).then(response => {
+      login({ username: username.trim(), password ,num }).then(response => {
 
         const { statusCode,content:{token,userId} } = response
 
@@ -120,7 +120,7 @@ const actions = {
       userPermissionMenuList({userId:getUserInfo().id}).then(response => {
         const { statusCode,content } = response
         if (statusCode === 0) {
-          const list = toTree(content)
+          const list = content
           list.forEach(item=>{
             item.component = Layout
             item.name = item.title
@@ -129,6 +129,7 @@ const actions = {
               icon:item.icon
             }
             item.path = item.uri
+            item.children = item.list
             if(dataType(item.children) === 'Array' && item.children.length>0){
               item.redirect = `${item.uri}/${item.children[0].uri}`
               // item.path = item.children.length === 1 ? `${item.uri}/${item.children[0].uri}` : item.uri
@@ -145,8 +146,8 @@ const actions = {
             }
           
           })      
-          console.log(list)
-          commit('setMenuList', list)
+
+          commit('setMenuList', content)
           
         }
 

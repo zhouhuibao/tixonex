@@ -6,7 +6,6 @@
         <el-button type="primary" @click="closeAll">收起<i class="el-icon-top"></i></el-button>
       </el-button-group>
       <el-button-group>
-        <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="openModal('add','添加顶级菜单',0)">添加顶级菜单</el-button> -->
         <el-button type="primary" icon="el-icon-s-claim" @click="save">保存</el-button>
         <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       </el-button-group>
@@ -14,65 +13,7 @@
 
     <el-row :gutter="20">
       <el-col :xs="24" :md="12" style="margin-bottom:20px;">
-        <vuedraggable class="wrapper" v-model="items">
-          <transition-group name="fade">
-            <div v-for="(item,index) in items" :key="index">
-              <div class="item clearfix">
-                <div class="itemName pull-left">
-                  <span v-if="getType(item.list) ">
-                    <el-button v-if="item.list.length>0" type="text" :class="item.open && item.list.length > 0 ? 'el-icon-minus' : 'el-icon-plus'" @click="silggle(item.title)"></el-button>
-                  </span>
-                  <i :class="item.icon"></i>
-
-                  {{ item.title }}
-                </div>
-                <div class=" pull-right">
-                    <el-button type="text" class="el-icon-circle-plus-outline" @click="openModal('add','添加子菜单',item.id)" title="添加子菜单"></el-button>
-                    <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改菜单',item.id)"></el-button>
-                    <el-popconfirm
-                      title="确定删除该菜单吗"
-                      @onConfirm="clickDel(item)"
-                    >
-                      <el-button  slot="reference" type="text" class="el-icon-delete"></el-button>
-                    </el-popconfirm>
-                </div>
-
-              </div>
-
-              <el-collapse-transition>
-                <div v-show="item.open">
-                  <div v-if="getType(item.list)" class="list" :style="`margin-left:20px;`">
-                    <vuedraggable v-model="items.item">
-                      <div v-for="(nodeItem,x) in item.list" :key="x" >
-                        <div class="item clearfix">
-                          <div class="itemName pull-left">
-                            <i :class="nodeItem.icon"></i>
-                            {{ nodeItem.title }}
-                            <el-button type="text" @click="routePush(`${item.uri}/${nodeItem.uri}`)">{{`${item.uri}/${nodeItem.uri}`}}</el-button>
-                          </div>
-                          <div class="itemName pull-right">
-                            <el-button type="text" class="el-icon-edit-outline" @click="openModal('edit','修改子菜单',nodeItem.id)"></el-button>
-                            <el-popconfirm
-                              title="确定删除该菜单吗"
-                              @onConfirm="clickDel(nodeItem)"
-                            >
-                              <el-button type="text"  slot="reference" class="el-icon-delete"></el-button>
-                            </el-popconfirm>
-                          </div>
-
-                        </div>
-                      </div>
-                    </vuedraggable>
-                  </div>
-
-                </div>
-                  
-              </el-collapse-transition>
-              
-
-            </div>
-          </transition-group>
-        </vuedraggable>
+        <menuLists :tasks="items" />
       </el-col>
       <el-col :xs="24" :md="12" >
         <div class="h1Title">添加顶级菜单</div>
@@ -92,11 +33,12 @@
 
 <script>
 //  引入组件
-import vuedraggable from 'vuedraggable';
-import {dataType,isEmpty} from '@/utils/auth'
+import menuLists from './components/menuList'
+import {isEmpty} from '@/utils/auth'
 import CreateForm from '@/components/CreateForm'
 import addOrEditMenu from './components/addOrEditMenu'
 import {menuList,delMenu,menuAddOrEdit,selectAdminMenuById} from '@/api/backstageSetting'
+import Bus from './components/bus.js'
 export default {
     name:'menuMange',
     data() {
@@ -146,6 +88,17 @@ export default {
           roleList:[]
         }
     },
+    computed: {
+      dragOptions() {
+        return {
+          animation: 0,
+          group: "description",
+          disabled: false,
+          ghostClass: "ghost"
+        };
+      },
+      
+    },
     watch:{
         '$store.state.backstageSetting.roleList':{
             handler(newValue) {
@@ -161,19 +114,44 @@ export default {
     　　　　deep: true
         }
     },
+    created(){
+      Bus.$on('open',(obj)=>{
+        const {type,title,id} = obj
+        this.pageInit={
+            title,
+            pageType:type,
+            id
+        }
+        this.visible=true
+      });
+      Bus.$on('deleteMenu',(id)=>{
+        delMenu({id}).then(res=>{
+          if(res.statusCode === 0){
+            this.getMenuList()
+            this.$message({
+              message:'删除成功',
+              type:'success'
+            })
+          }
+        })
+      });
+      
+    },
     mounted(){
       this.getMenuList()
       this.$store.dispatch({
         type:'backstageSetting/getRoleList'
       })
+
     },
     
     components: {
         addOrEditMenu,
-        vuedraggable,
-        CreateForm
+        CreateForm,
+        menuLists
     },
     methods:{
+      
       save(){
         this.$message({
             message: `保存成功`,
@@ -209,14 +187,11 @@ export default {
           })
 
           this.items = content
-          // this.loading = false
         }).catch(()=>{
           // this.loading=false
       })
       },
-      spanClick(){
-        
-      },
+     
       routePush(path){
         this.$router.push(path)
       },
@@ -225,25 +200,6 @@ export default {
         if(refresh){
           this.getMenuList()
         }
-      },
-      openModal(type,title,id){
-        this.pageInit={
-            title,
-            pageType:type,
-            id
-        }
-        this.visible=true
-      },
-      clickDel(item){
-        delMenu({id:item.id}).then(res=>{
-          if(res.statusCode === 0){
-            this.getMenuList()
-            this.$message({
-              message:'删除成功',
-              type:'success'
-            })
-          }
-        })
       },
       openAll(){
         const {items} = this;
@@ -256,20 +212,6 @@ export default {
         items.forEach(item=>{
             item.open = false
         })
-      },
-      silggle(id){
-        const {items} = this;
-        items.forEach(item=>{
-          if(item.title === id){
-            item.open = !item.open
-          }
-        })
-      },
-      getType(data){
-        if(dataType(data) === 'Array'){
-          return true
-        }
-        return false
       },
       
     }

@@ -244,10 +244,16 @@ export const constantRoutes = [
     meta: { title: 'OTC管理', icon: 'example' },
     children: [
       {
-        path: 'OTC-order-list',
-        name: 'OTC挂单列表',
-        component: () => import('@/views/OtcManage/otcOrderList'),
-        meta: { title: 'OTC挂单列表' }
+        path: 'OTC-buy-order-list',
+        name: 'OTC买单列表',
+        component: () => import('@/views/OtcManage/otcBuyOrderList'),
+        meta: { title: 'OTC买单列表' }
+      },
+      {
+        path: 'OTC-sell-order-list',
+        name: 'OTC卖单列表',
+        component: () => import('@/views/OtcManage/otcSellOrderList'),
+        meta: { title: 'OTC卖单列表' }
       },
       {
         path: 'OTC-config-list',
